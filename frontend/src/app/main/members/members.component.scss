@@ -1,0 +1,41 @@
+@import '@core/scss/base/colors';
+
+.content-body {
+    .members-holder {
+        display: grid;
+        grid-template-columns: 4fr 4fr 4fr;
+        gap: 2em;
+
+        .badge {
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        &__member {
+            background-color: #192A35;
+            padding: 2em;
+            border-radius: 1em;
+
+            h2 {
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 140%;
+            }
+        }
+
+        &__description {
+            font-size: 16px;
+            opacity: 0.4000000059604645;
+        }
+
+        &__view-details {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 100%;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            margin-top: 1em;
+            color: $primary;
+        }
+    }
+}

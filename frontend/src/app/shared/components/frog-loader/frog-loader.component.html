@@ -1,0 +1,19 @@
+<div class="wrapper-loader dis-flex flex-center align-center" *ngIf="globalLoaderService.showLoader$ | async">
+  <div>
+    <div [ngStyle]="{'width': globalLoaderService.text ? '450px' : '250px'}">
+      <div class="snippet" data-title=".dot-floating">
+        <div class="stage">
+          <div class="dotFloating" *ngIf="!globalLoaderService.text;else text">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <ng-template #text><span class="loader_text">{{globalLoaderService.text}}</span></ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,26 @@
+<div class="content-wrapper container-xxl p-0">
+    <app-members-form></app-members-form>
+
+    <div class="content-body mt-2">
+        <div class="members-holder">
+            <div class="members-holder__member" *ngFor="let member of members">
+                <div class="d-block">
+                    <h2>
+                        {{member.first_name}} {{member.last_name}}
+                    </h2>
+                    <div>
+                        <div>
+                            {{member.email}}
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="members-holder__description">
+                    {{member.description}}
+                </div> -->
+                <div class="members-holder__view-details">
+                    View details
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

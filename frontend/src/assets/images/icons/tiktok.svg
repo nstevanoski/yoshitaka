@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 13" width="13" height="13">
+	<title>New Project</title>
+	<defs>
+		<image  width="11" height="14" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAMAAADOvxanAAAAAXNSR0IB2cksfwAAAJZQTFRFAAAAcGt+b2t9cGt+cGx+b2t9b2t+b2t9b2t9b2t9cGx+b2t9b2t9cHCAcGt9cGx+cGx9b2t9b2t9b2t9cGp9b2t9b2t9b2t9cGx9b2t9b2t9b2t9cGt9cGx+b2t9cGx+b2t9b2t9b2t9cGt+cGt+b2t9b2t9b2t9cGiAb2t9b2t9b2t9b2t9b2t9b21/cGqAcGx+cGx+jKjfvAAAADJ0Uk5TAAy1GRXqQ62xRTmK3wMSKw0vv+YbQON5LK6S0FsX6yiHN/YOMFTXgwJPy9XTgAsEEwirvr6JAAAAZklEQVR4nGNgAAFGJmYGGGBhZUNisyOxWTk4mWFsLm4eJiCDlw/I5mcQYGRgEBQSFgGxgUBUTFyCAcqWlAKrB7OlZYCErJw8iM2hACQUlZSh6lVU1dTBRmtoamnr6OpBLdU3MIQwABxlBYtCbZ8oAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Layer 3" href="#img1" x="1" y="0"/>
+</svg>

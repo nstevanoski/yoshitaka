@@ -1,0 +1,105 @@
+@import "../../../../assets/variables-colors";
+$dots-color: $blue-background-color;
+
+.wrapper-loader {
+  display: flex;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  height: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999999;
+}
+
+.snippet {
+  position: relative;
+  background: transparent;
+  padding: 1rem 5%;
+  margin: 1.5rem 0;
+  border-radius: 0.25rem;
+}
+
+.loader_text {
+  color: var(--yoshitaka-text-primary);
+  font-family: Avenir, sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
+.stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 2rem 0;
+  margin: 0 -5%;
+  overflow: hidden;
+
+    .dotFloating {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .dotFloating div {
+      position: absolute;
+      top: 33px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: $dots-color;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+
+    .dotFloating div:nth-child(1) {
+      left: 8px;
+      animation: dotFloating1 0.6s infinite;
+    }
+
+    .dotFloating div:nth-child(2) {
+      left: 8px;
+      animation: dotFloating2 0.6s infinite;
+    }
+
+    .dotFloating div:nth-child(3) {
+      left: 32px;
+      animation: dotFloating2 0.6s infinite;
+    }
+
+    .dotFloating div:nth-child(4) {
+      left: 56px;
+      animation: dotFloating3 0.6s infinite;
+    }
+}
+
+
+@keyframes dotFloating1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes dotFloating3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes dotFloating2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
