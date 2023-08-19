@@ -226,6 +226,14 @@ export class MembersComponent implements OnInit {
     return row.id;
   }
 
+  memberHasPaid(member: Member) {
+    if (member.has_paid !== member.total_sum) {
+      return '<span class="badge badge-danger">UNPAID</span>';
+    } else {
+      return '<span class="badge badge-info">PAID</span>';
+    }
+  }
+
   getItems(item: number): void {
     this.page = item;
     this._datatablesService.list(item).then(() => {
