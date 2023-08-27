@@ -20,9 +20,9 @@ const getPagingData = (data, page, limit) => {
 // CREATE MEMBER
 exports.create = async (req, res) => {
   try {
-    const { first_name, last_name, email, has_paid, left_to_be_paid, total_sum, belt_color } = req.body;
+    const { first_name, last_name, email, has_paid, left_to_be_paid, total_sum, belt_color, last_paid } = req.body;
 
-    if (!first_name || !last_name || !has_paid || !left_to_be_paid || !total_sum || !belt_color) {
+    if (!first_name || !last_name || !has_paid || !total_sum || !belt_color) {
       return res.status(400).send({ message: 'All fields are required!' });
     }
 
@@ -39,6 +39,7 @@ exports.create = async (req, res) => {
       left_to_be_paid,
       total_sum,
       belt_color,
+      last_paid
     };
 
     const createdMember = await Member.create(memberObject);
@@ -52,7 +53,6 @@ exports.create = async (req, res) => {
 exports.getAll = async (req, res) => {
   try {
     const { page, size, keyword, order_by } = req.query;
-    const { Op } = require('sequelize');
 
     let condition = null;
 
@@ -74,7 +74,21 @@ exports.getAll = async (req, res) => {
       offset,
     });
 
-    const response = getPagingData(members, page, limit);
+    const currentDate = new Date();
+    const membersWithPaymentStatus = members.rows.map(member => {
+      const paid = (member.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (member.left_to_be_paid == null);
+      return {
+        ...member.toJSON(),
+        paid,
+      };
+    });
+
+    const response = getPagingData(
+      { count: members.count, rows: membersWithPaymentStatus },
+      page,
+      limit
+    );
+
     res.send({ data: response });
   } catch (err) {
     res.status(400).send(err.message);
@@ -89,12 +103,17 @@ exports.findOne = async (req, res) => {
     const data = await Member.findByPk(id);
     
     if (!data) {
-      return res.status(500).send({
-        message: `Something went wrong with member id ${id}`
-      });
+      return res.status(404).json({ message: 'Member not found' });
     }
 
-    res.send({ member: data });
+    const currentDate = new Date();
+    const paid = (data.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (data.left_to_be_paid == null);
+    const memberWithPaymentStatus = {
+      ...data.toJSON(),
+      paid,
+    };
+
+    res.send({ member: memberWithPaymentStatus });
   } catch (error) {
     res.status(500).send({
       message: `Error retrieving member with id ${id}`

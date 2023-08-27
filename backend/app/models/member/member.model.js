@@ -26,8 +26,12 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
           type: DataTypes.INTEGER
         },
         left_to_be_paid: {
-          allowNull: false,
+          allowNull: true,
           type: DataTypes.INTEGER
+        },
+        last_paid: {
+          allowNull: true,
+          type: DataTypes.DATE
         },
         total_sum: {
           allowNull: false,
