@@ -7,6 +7,8 @@ export class Member {
     has_paid: number;
     left_to_be_paid: number;
     total_sum: number;
+    last_paid: Date;
+    paid: boolean;
     created_at: string;
     updated_at: string;
 }
