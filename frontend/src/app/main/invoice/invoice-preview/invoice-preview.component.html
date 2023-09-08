@@ -140,7 +140,7 @@
             <div class="card">
               <div class="card-body">
                 <button
-                  *ngIf="apiData.paid == false"
+                  *ngIf="apiData.amount !== apiData.price"
                   class="btn btn-primary btn-block mb-75"
                   data-toggle="modal"
                   data-target="#send-invoice-sidebar"
@@ -167,7 +167,7 @@
       </section>
     </div>
   
-    <!-- <core-sidebar
+    <core-sidebar
       class="modal modal-slide-in sidebar-todo-modal fade"
       name="invoice-sidebar"
       overlayClass="modal-backdrop"
@@ -175,14 +175,5 @@
     >
       <app-send-invoice-sidebar-preview></app-send-invoice-sidebar-preview>
     </core-sidebar>
-  
-    <core-sidebar
-      class="modal modal-slide-in sidebar-todo-modal fade"
-      name="add-payment-sidebar"
-      overlayClass="modal-backdrop"
-      hideOnEsc="true"
-    >
-      <app-add-payment-sidebar-preview></app-add-payment-sidebar-preview>
-    </core-sidebar> -->
   </div>
   

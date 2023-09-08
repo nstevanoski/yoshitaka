@@ -21,6 +21,7 @@ import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.mo
 import { InvoicesFormComponent } from './invoice-list/forms/invoice-form/invoice-form.component';
 import { InvoiceAddComponent } from './invoice-add/invoice-add.component';
 import { InvoiceEditComponent } from './invoice-edit/invoice-edit.component';
+import { SendInvoiceSidebarPreviewComponent } from './invoice-preview/sidebar/send-invoice-sidebar-preview/send-invoice-sidebar-preview.component';
 
 const routes: Routes = [
   {
@@ -54,7 +55,8 @@ const routes: Routes = [
     InvoicesComponent,
     InvoicesFormComponent,
     InvoiceAddComponent,
-    InvoiceEditComponent
+    InvoiceEditComponent,
+    SendInvoiceSidebarPreviewComponent
   ],
   imports: [
     CommonModule,
