@@ -24,6 +24,10 @@ const routes: Routes = [
     },
     data: { animation: 'datatables' }
   },
+  {
+    path: 'invoice',
+    loadChildren: () => import('../invoice/invoice.module').then(m => m.InvoiceModule)
+  },
 ];
 
 

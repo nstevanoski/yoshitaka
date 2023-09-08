@@ -1,6 +1,10 @@
 <div class="content-wrapper container-xxl p-0">
     <app-members-form></app-members-form>
 
+    <div *ngIf="members.length == 0">
+        No members found!
+    </div>
+
     <div class="content-body mt-2">
         <div class="members-holder">
             <div class="members-holder__member" *ngFor="let member of members">
@@ -15,7 +19,7 @@
                 <div class="members-holder__description">
                     {{member.email}}
                 </div>
-                <div class="members-holder__view-details">
+                <div class="members-holder__view-details" [routerLink]="['/members/invoice/preview', member.id]">
                     View details
                 </div>
             </div>
