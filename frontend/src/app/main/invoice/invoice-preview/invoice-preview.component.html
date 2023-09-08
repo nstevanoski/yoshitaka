@@ -1,4 +1,4 @@
-<div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0" *ngIf="apiData && member">
     <div class="content-body">
       <section class="invoice-preview-wrapper">
         <div class="row invoice-preview">
@@ -47,8 +47,8 @@
                 <div class="row invoice-spacing">
                   <div class="col-xl-6 p-0">
                     <h6 class="mb-2">Invoice To:</h6>
-                    <h6 class="mb-25">{{ apiData.first_name }} {{ apiData.last_name }}</h6>
-                    <p class="card-text mb-0">{{ apiData.email }}</p>
+                    <h6 class="mb-25">{{ member.first_name }} {{ member.last_name }}</h6>
+                    <p class="card-text mb-0">{{ member.email }}</p>
                   </div>
                   <div class="col-xl-6 p-0 mt-xl-0 mt-2">
                     <h6 class="mb-2">Payment Details:</h6>
@@ -57,7 +57,7 @@
                         <tr>
                           <td class="pr-1">Total Due:</td>
                           <td>
-                            <span class="font-weight-bold">{{ apiData.has_paid }} den</span>
+                            <span class="font-weight-bold">{{ apiData.paid }} den</span>
                           </td>
                         </tr>
                         <tr>
@@ -104,16 +104,16 @@
                         </p>
                       </td>
                       <td class="py-1">
-                        <span class="font-weight-bold">{{ apiData.has_paid }} den</span>
+                        <span class="font-weight-bold">{{ apiData.paid }} den</span>
                       </td>
                       <td class="py-1">
-                        <span class="font-weight-bold">{{ apiData.total_sum }} den</span>
+                        <span class="font-weight-bold">{{ apiData.amount }} den</span>
                       </td>
                       <td class="py-1">
                         <span class="font-weight-bold">1 month</span>
                       </td>
                       <td class="py-1">
-                        <span class="font-weight-bold">{{ apiData.has_paid }} den</span>
+                        <span class="font-weight-bold">{{ apiData.paid }} den</span>
                       </td>
                     </tr>
                   </tbody>
@@ -131,12 +131,12 @@
                     <div class="invoice-total-wrapper">
                       <div class="invoice-total-item">
                         <p class="invoice-total-title">Subtotal:</p>
-                        <p class="invoice-total-amount">{{ apiData.has_paid }} den</p>
+                        <p class="invoice-total-amount">{{ apiData.paid }} den</p>
                       </div>
                       <hr class="my-50" />
                       <div class="invoice-total-item">
                         <p class="invoice-total-title">Total:</p>
-                        <p class="invoice-total-amount">{{ apiData.has_paid }} den</p>
+                        <p class="invoice-total-amount">{{ apiData.paid }} den</p>
                       </div>
                     </div>
                   </div>

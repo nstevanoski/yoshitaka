@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { InvoicePreviewService } from './invoice-preview.service';
+import { Member } from 'app/main/models/member.model';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { InvoicePreviewService } from './invoice-preview.service';
 export class InvoicePreviewComponent implements OnInit, OnDestroy {
   // public
   public apiData;
+  public member: Member;
   public urlLastValue;
   public url = this.router.url;
   public sidebarToggleRef = false;
@@ -27,6 +29,7 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
     iban: 'STB95476213874685',
     swiftCode: 'ST91905'
   };
+  
 
   // private
   private _unsubscribeAll: Subject<any>;
@@ -66,7 +69,14 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     this._invoicePreviewService.onInvoicPreviewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
-      this.apiData = response.member;
+      this.apiData = response.invoice;
+
+      if (this.apiData.memberId) {
+        this._invoicePreviewService.getMember(this.apiData.memberId)
+          .then((res: any) => {
+            this.member = res.member;
+          })
+      }
     });
   }
 
