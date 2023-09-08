@@ -212,10 +212,14 @@ export class MembersService implements Resolve<any> {
   }
 
   getAllMembers(): Promise<Member[]> {
-    return this.http.get<any>(`${environment.apiUrl}/members`).toPromise();
+    return this.http.get<any>(`${environment.apiUrl}/api/members`).toPromise();
   }
 
   createMember(form: any): Promise<Member> {
-    return this.http.post<Member>(`${environment.apiUrl}/members`, form).toPromise();
+    return this.http.post<Member>(`${environment.apiUrl}/api/members`, form).toPromise();
+  }
+
+  updateMember(form: any, id: number): Promise<Member> {
+    return this.http.put<Member>(`${environment.apiUrl}/api/members/${id}`, form).toPromise();
   }
 }

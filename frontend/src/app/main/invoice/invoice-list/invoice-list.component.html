@@ -1,4 +1,10 @@
-<div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0" *ngIf="kitchenSinkRows && kitchenSinkRows.length == 0">
+  <div class="alert alert-danger p-2">
+    No invoices found for this member!
+  </div>
+</div>
+
+<div class="content-wrapper container-xxl p-0" *ngIf="kitchenSinkRows && kitchenSinkRows != 0">
   <app-invoice-form></app-invoice-form>
 
   <div class="content-body">

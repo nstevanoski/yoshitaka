@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MembersService } from '../members.service';
+import { MemberCreateComponent } from '../member-create/member-create.component';
 
 @Component({
   selector: 'app-members-form',
@@ -40,6 +41,12 @@ export class MembersFormComponent implements OnInit {
         distinctUntilChanged()
       ).subscribe((sort: any) => {
         this.membersService.onPerPageChanged?.next(sort);
+    });
+  }
+
+  addMemberModal() {
+    this.modalService.open(MemberCreateComponent, {
+      centered: true
     });
   }
 

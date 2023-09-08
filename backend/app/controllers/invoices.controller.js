@@ -66,11 +66,6 @@ exports.getAll = async (req, res) => {
             offset,
         });
 
-        if (invoices.count === 0) {
-            // If there are no invoices for the specified member ID, send a custom message.
-            return res.status(404).send({message: `No ${payment_status ? payment_status : ''} invoices found for member id ${id}.`});
-        }
-
         const response = getPagingData(
             invoices,
             page,

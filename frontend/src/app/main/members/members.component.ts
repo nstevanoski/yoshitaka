@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalLoaderService } from 'app/shared/services/global-loader.service';
 import { MembersService } from './members.service';
 import { Member } from '../models/member.model';
+import { MemberCreateComponent } from './member-create/member-create.component';
 
 
 @Component({
@@ -226,18 +227,47 @@ export class MembersComponent implements OnInit {
     return row.id;
   }
 
-  memberHasPaid(member: Member) {
-    if (member.paid) {
-      return '<span class="badge badge-primary">PAID</span>';
-    } else {
-      return '<span class="badge badge-danger">UNPAID</span>';
-    }
-  }
-
   getItems(item: number): void {
     this.page = item;
     this._datatablesService.list(item).then(() => {
       window.scrollTo({ top: 0 });
     });
+  }
+
+  openEditModal(member: Member) {
+    const modal = this.modalService.open(MemberCreateComponent, {
+      centered: true
+    });
+
+    modal.componentInstance.member = member;
+    modal.componentInstance.currentPage = this.page;
+  }
+
+  deleteMember(member: Member) {
+    const modal = this.modalService.open(ConfirmationDialogComponent, {
+      centered: true
+    });
+
+    modal.componentInstance.info = {
+      title: 'Delete Member',
+      message: 'Are you sure you want to delete this member?'
+    }
+
+    modal.result.then((res) => {
+      if (res) {
+        this._datatablesService.deleteMemberPost(member.id)
+          .then(() => {
+            this._snackBar.open('Invoice has been deleted successfully!', 'Close', {
+              duration: 2500,
+              panelClass: ['ribbet-success-snackbar']
+            });
+          }).catch((err) => {
+            this._snackBar.open(err.error.message, 'Close', {
+              duration: 2500,
+              panelClass: ['ribbet-danger-snackbar']
+            });
+          })
+      }
+    })
   }
 }

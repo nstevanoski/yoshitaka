@@ -14,6 +14,7 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { MembersComponent } from './members.component';
 import { MembersFormComponent } from './members-form/members-form.component';
 import { MembersService } from './members.service';
+import { MemberCreateComponent } from './member-create/member-create.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     MembersComponent,
-    MembersFormComponent
+    MembersFormComponent,
+    MemberCreateComponent
   ],
   imports: [
     CommonModule,
