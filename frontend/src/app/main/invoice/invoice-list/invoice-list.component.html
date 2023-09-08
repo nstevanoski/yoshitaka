@@ -1,4 +1,6 @@
 <div class="content-wrapper container-xxl p-0" *ngIf="kitchenSinkRows && kitchenSinkRows.length == 0">
+  <app-invoice-form></app-invoice-form>
+
   <div class="alert alert-danger p-2">
     No invoices found for this member!
   </div>
@@ -88,6 +90,12 @@
           <ngx-datatable-column name="Actions" [width]="120" [sortable]="false">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div class="d-flex align-items-center">
+                <div class="mr-1" [routerLink]="['/members/invoice/preview', row.id]" routerLinkActive="router-link-active" >
+                  <i data-feather="eye" class="text-primary cursor-pointer"></i>
+                </div>
+                <div class="mr-1" (click)="openEditModal(row)">
+                  <i data-feather="edit" class="text-primary cursor-pointer"></i>
+                </div>
                 <div ngbDropdown container="body">
                   <a ngbDropdownToggle href="javascript:void(0);" class="hide-arrow" id="dropdownBrowserState"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,13 +105,6 @@
                     <a href="javascript:void(0)" (click)="deleteInvoice(row)" ngbDropdownItem
                       class="d-flex align-items-center"><i data-feather="trash-2" class="mr-50"></i> Delete</a>
                   </div>
-                </div>
-
-                <div class="mr-1" [routerLink]="['/members/invoice/preview', row.id]" routerLinkActive="router-link-active" >
-                  <i data-feather="eye" class="text-primary cursor-pointer"></i>
-                </div>
-                <div (click)="openEditModal(row)">
-                  <i data-feather="edit" class="text-primary cursor-pointer"></i>
                 </div>
               </div>
             </ng-template>
