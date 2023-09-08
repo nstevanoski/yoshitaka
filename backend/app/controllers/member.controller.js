@@ -20,9 +20,9 @@ const getPagingData = (data, page, limit) => {
 // CREATE MEMBER
 exports.create = async (req, res) => {
   try {
-    const { first_name, last_name, email, has_paid, left_to_be_paid, total_sum, belt_color, last_paid } = req.body;
+    const { first_name, last_name, email } = req.body;
 
-    if (!first_name || !last_name || !has_paid || !total_sum || !belt_color) {
+    if (!first_name || !last_name || !email) {
       return res.status(400).send({ message: 'All fields are required!' });
     }
 
@@ -35,11 +35,6 @@ exports.create = async (req, res) => {
       first_name,
       last_name,
       email,
-      has_paid,
-      left_to_be_paid,
-      total_sum,
-      belt_color,
-      last_paid
     };
 
     const createdMember = await Member.create(memberObject);
@@ -74,17 +69,8 @@ exports.getAll = async (req, res) => {
       offset,
     });
 
-    const currentDate = new Date();
-    const membersWithPaymentStatus = members.rows.map(member => {
-      const paid = (member.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (member.left_to_be_paid == null || member.left_to_be_paid == 0);
-      return {
-        ...member.toJSON(),
-        paid,
-      };
-    });
-
     const response = getPagingData(
-      { count: members.count, rows: membersWithPaymentStatus },
+      members,
       page,
       limit
     );
@@ -100,20 +86,13 @@ exports.findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const data = await Member.findByPk(id);
+    const data = await Member.findByPk(id, {include: [{association: "invoices"}]});
     
     if (!data) {
       return res.status(404).json({ message: 'Member not found' });
     }
 
-    const currentDate = new Date();
-    const paid = (data.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (data.left_to_be_paid == null || data.left_to_be_paid == 0);
-    const memberWithPaymentStatus = {
-      ...data.toJSON(),
-      paid,
-    };
-
-    res.send({ member: memberWithPaymentStatus });
+    res.send({ member: data });
   } catch (error) {
     res.status(500).send({
       message: `Error retrieving member with id ${id}`

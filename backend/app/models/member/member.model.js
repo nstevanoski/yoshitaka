@@ -21,26 +21,6 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
           allowNull: false,
           type: DataTypes.STRING
         },
-        has_paid: {
-          allowNull: false,
-          type: DataTypes.INTEGER
-        },
-        left_to_be_paid: {
-          allowNull: true,
-          type: DataTypes.INTEGER
-        },
-        last_paid: {
-          allowNull: true,
-          type: DataTypes.DATE
-        },
-        total_sum: {
-          allowNull: false,
-          type: DataTypes.INTEGER
-        },
-        belt_color: {
-          allowNull: false,
-          type: DataTypes.STRING
-        },
         created_at: {
           allowNull: false,
           type: DataTypes.DATE

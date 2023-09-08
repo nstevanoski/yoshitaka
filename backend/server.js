@@ -19,6 +19,7 @@ db.sequelize.sync();
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/member.routes")(app);
+require("./app/routes/member_invoice.routes")(app);
 
 // app.use(express.static(__dirname + '/dist/frontend'));
 
