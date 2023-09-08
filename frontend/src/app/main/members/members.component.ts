@@ -228,7 +228,7 @@ export class MembersComponent implements OnInit {
 
   memberHasPaid(member: Member) {
     if (member.paid) {
-      return '<span class="badge badge-info">PAID</span>';
+      return '<span class="badge badge-primary">PAID</span>';
     } else {
       return '<span class="badge badge-danger">UNPAID</span>';
     }

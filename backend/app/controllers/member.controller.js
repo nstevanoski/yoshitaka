@@ -76,7 +76,7 @@ exports.getAll = async (req, res) => {
 
     const currentDate = new Date();
     const membersWithPaymentStatus = members.rows.map(member => {
-      const paid = (member.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (member.left_to_be_paid == null);
+      const paid = (member.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (member.left_to_be_paid == null || member.left_to_be_paid == 0);
       return {
         ...member.toJSON(),
         paid,
@@ -107,7 +107,7 @@ exports.findOne = async (req, res) => {
     }
 
     const currentDate = new Date();
-    const paid = (data.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (data.left_to_be_paid == null);
+    const paid = (data.last_paid >= new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)) && (data.left_to_be_paid == null || data.left_to_be_paid == 0);
     const memberWithPaymentStatus = {
       ...data.toJSON(),
       paid,

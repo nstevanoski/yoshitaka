@@ -22,6 +22,11 @@
                       Invoice
                       <span class="invoice-number">#{{ apiData.id }}</span>
                     </h4>
+                    <div class="d-flex justify-content-end mb-1" *ngIf="apiData.paid == true">
+                      <div class="badge badge-primary">
+                        PAID
+                      </div>
+                    </div>
                     <div class="invoice-date-wrapper">
                       <p class="invoice-date-title">Date Issued:</p>
                       <p class="invoice-date">{{ apiData.created_at }}</p>
@@ -84,7 +89,8 @@
                   <thead>
                     <tr>
                       <th class="py-1">Task description</th>
-                      <th class="py-1">Rate</th>
+                      <th class="py-1">Paid</th>
+                      <th class="py-1">Total Sum</th>
                       <th class="py-1">Duration</th>
                       <th class="py-1">Total</th>
                     </tr>
@@ -101,10 +107,13 @@
                         <span class="font-weight-bold">{{ apiData.has_paid }} den</span>
                       </td>
                       <td class="py-1">
+                        <span class="font-weight-bold">{{ apiData.total_sum }} den</span>
+                      </td>
+                      <td class="py-1">
                         <span class="font-weight-bold">1 month</span>
                       </td>
                       <td class="py-1">
-                        <span class="font-weight-bold">{{ apiData.has_paid }}</span>
+                        <span class="font-weight-bold">{{ apiData.has_paid }} den</span>
                       </td>
                     </tr>
                   </tbody>
@@ -145,13 +154,14 @@
             <div class="card">
               <div class="card-body">
                 <button
+                  *ngIf="apiData.paid == false"
                   class="btn btn-primary btn-block mb-75"
                   data-toggle="modal"
                   data-target="#send-invoice-sidebar"
                   (click)="toggleSidebar('invoice-sidebar')"
                   rippleEffect
                 >
-                  Send Invoice
+                  Send Email
                 </button>
                 <a class="btn btn-outline-secondary btn-block mb-75" href="javascript:window.print();" rippleEffect>
                   Print

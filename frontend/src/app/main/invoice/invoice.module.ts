@@ -28,7 +28,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    InvoicePreviewComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
