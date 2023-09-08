@@ -29,11 +29,11 @@
                     </div>
                     <div class="invoice-date-wrapper">
                       <p class="invoice-date-title">Date Issued:</p>
-                      <p class="invoice-date">{{ apiData.created_at }}</p>
+                      <p class="invoice-date">{{ apiData.created_at | date }}</p>
                     </div>
                     <div class="invoice-date-wrapper">
                       <p class="invoice-date-title">Due Date:</p>
-                      <p class="invoice-date">{{ apiData.updated_at }}</p>
+                      <p class="invoice-date">{{ apiData.updated_at | date }}</p>
                     </div>
                   </div>
                 </div>
