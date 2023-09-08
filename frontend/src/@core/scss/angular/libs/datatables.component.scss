@@ -186,8 +186,8 @@ $datatables-dark-active-bg-color: $theme-dark-card-bg;
 .dark-layout {
   .datatable-header-inner,
   .datatable-header {
-    background-color: $datatables-dark-header-bg-color !important;
-    border-top: 1px solid $datatables-dark-border-color !important;
+    background-color: #0F151F !important;
+    border-top: 1px solid #0F151F !important;
   }
 
   .ngx-datatable.bootstrap.core-bootstrap {
@@ -211,7 +211,7 @@ $datatables-dark-active-bg-color: $theme-dark-card-bg;
   }
 
   .datatable-body {
-    background-color: $datatables-dark-body-bg-color !important;
+    background-color: #0F151F !important;
   }
 
   .pager {

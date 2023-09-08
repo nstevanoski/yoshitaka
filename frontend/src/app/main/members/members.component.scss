@@ -47,3 +47,21 @@
 .icon {
     cursor: pointer;
 }
+
+@media only screen and (max-width: 1300px) {
+    .members-holder {
+        grid-template-columns: 33% 33% 33% !important;
+    }
+}
+
+@media only screen and (max-width: 976px) {
+    .members-holder {
+        grid-template-columns: 45% 45% !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .members-holder {
+        grid-template-columns: 100% !important;
+    }
+}
