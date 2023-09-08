@@ -20,6 +20,7 @@ import { InvoicesComponent } from './invoice-list/invoice-list.component';
 import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
 import { InvoicesFormComponent } from './invoice-list/forms/invoice-form/invoice-form.component';
 import { InvoiceAddComponent } from './invoice-add/invoice-add.component';
+import { InvoiceEditComponent } from './invoice-edit/invoice-edit.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
     path: 'add/:member_id',
     component: InvoiceAddComponent,
     data: { animation: 'InvoiceAddComponent' }
+  },
+  {
+    path: 'edit/:member_id/:invoice_id',
+    component: InvoiceEditComponent,
+    data: { animation: 'InvoiceEditComponent' }
   }
 ];
 
@@ -47,7 +53,8 @@ const routes: Routes = [
     InvoicePreviewComponent,
     InvoicesComponent,
     InvoicesFormComponent,
-    InvoiceAddComponent
+    InvoiceAddComponent,
+    InvoiceEditComponent
   ],
   imports: [
     CommonModule,

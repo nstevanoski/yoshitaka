@@ -1,0 +1,25 @@
+@import '@core/scss/base/pages/app-invoice.scss';
+@import '@core/scss/angular/libs/flatpickr.component.scss';
+
+// Preview
+// Windows Print Dialogue
+@media print {
+  @page {
+    margin: 0;
+  }
+  .invoice-actions,
+  .main-menu,
+  .buy-now {
+    visibility: hidden;
+  }
+
+  .printRef {
+    max-width: 100% !important;
+    flex: 0 0 100%;
+  }
+}
+
+.dark-layout .card {
+    background-color: #0F151F !important;
+    box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24);
+}

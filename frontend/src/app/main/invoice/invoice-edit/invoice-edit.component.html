@@ -1,4 +1,5 @@
-<div class="content-wrapper container-xxl p-0" *ngIf="apiData && member">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="content-wrapper container-xxl p-0" *ngIf="member && invoice">
     <div class="content-body">
       <section class="invoice-preview-wrapper">
         <div class="row invoice-preview">
@@ -9,35 +10,13 @@
                 <!-- Header Starts -->
                 <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0">
                   <div>
-                    <div class="logo-wrapper">
+                    <div class="logo-wrapper d-flex align-items-center mb-2">
                     <img src="/assets/images/logo/yoshitaka-symb.png" alt="">
                       <h3 class="text-primary invoice-logo">Yoshitaka</h3>
                     </div>
                     <p class="card-text mb-25">Cando Kuzmanov 60, Rosoman</p>
                     <p class="card-text mb-25">Macedonia</p>
                     <p class="card-text mb-0">+389 70 205 044</p>
-                  </div>
-                  <div class="mt-md-0 mt-2">
-                    <h4 class="invoice-title">
-                      Invoice
-                      <span class="invoice-number">#{{ apiData.id }}</span>
-                    </h4>
-                    <div class="d-flex justify-content-end mb-1">
-                      <div class="badge badge-primary" *ngIf="apiData.amount === apiData.paid">
-                        PAID
-                      </div>
-                      <div class="badge badge-danger" *ngIf="apiData.amount !== apiData.paid">
-                        UNPAID
-                      </div>
-                    </div>
-                    <div class="invoice-date-wrapper">
-                      <p class="invoice-date-title">Date Issued:</p>
-                      <p class="invoice-date">{{ apiData.created_at | date }}</p>
-                    </div>
-                    <div class="invoice-date-wrapper">
-                      <p class="invoice-date-title">Due Date:</p>
-                      <p class="invoice-date">{{ apiData.updated_at | date }}</p>
-                    </div>
                   </div>
                 </div>
                 <!-- Header Ends -->
@@ -98,7 +77,10 @@
                         </p>
                       </td>
                       <td class="py-1 text-right">
-                        <span class="font-weight-bold">{{ apiData.amount }} den</span>
+                        <span class="font-weight-bold d-flex align-items-center">
+                            <input type="text" class="form-control mr-1" formControlName="amount">
+                             den
+                        </span>
                       </td>
                     </tr>
                   </tbody>
@@ -113,16 +95,9 @@
                     <div class="invoice-total-wrapper">
                       <div class="invoice-total-item">
                         <p class="invoice-total-title">Paid:</p>
-                        <p class="invoice-total-amount">{{ apiData.paid }} den</p>
-                      </div>
-                      <div class="invoice-total-item" *ngIf="apiData.amount !== apiData.paid">
-                        <p class="invoice-total-title">Dept:</p>
-                        <p class="invoice-total-amount">{{ apiData.amount - apiData.paid }} den</p>
-                      </div>
-                      <hr class="my-50" />
-                      <div class="invoice-total-item">
-                        <p class="invoice-total-title">Total:</p>
-                        <p class="invoice-total-amount">{{ apiData.paid }} den</p>
+                        <p class="invoice-total-amount d-flex align-items-center ml-1">
+                            <input type="text" class="form-control mr-1" formControlName="paid">
+                            den</p>
                       </div>
                     </div>
                   </div>
@@ -139,26 +114,9 @@
           <div class="col-xl-3 col-md-4 col-12 invoice-actions mt-md-0 mt-2">
             <div class="card">
               <div class="card-body">
-                <button
-                  *ngIf="apiData.paid == false"
-                  class="btn btn-primary btn-block mb-75"
-                  data-toggle="modal"
-                  data-target="#send-invoice-sidebar"
-                  (click)="toggleSidebar('invoice-sidebar')"
-                  rippleEffect
-                >
-                  Send Email
+                <button type="submit" class="btn btn-outline-secondary btn-block mb-75 text-white">
+                  Save
                 </button>
-                <a class="btn btn-outline-secondary btn-block mb-75 text-white" href="javascript:window.print();" rippleEffect>
-                  Print
-                </a>
-                <a
-                  class="btn btn-outline-secondary btn-block mb-75 text-white"
-                  [routerLink]="['/members/invoice/edit', member.id, apiData.id]" 
-                  rippleEffect
-                >
-                  Edit
-                </a>
               </div>
             </div>
           </div>
@@ -167,22 +125,5 @@
       </section>
     </div>
   
-    <!-- <core-sidebar
-      class="modal modal-slide-in sidebar-todo-modal fade"
-      name="invoice-sidebar"
-      overlayClass="modal-backdrop"
-      hideOnEsc="true"
-    >
-      <app-send-invoice-sidebar-preview></app-send-invoice-sidebar-preview>
-    </core-sidebar>
-  
-    <core-sidebar
-      class="modal modal-slide-in sidebar-todo-modal fade"
-      name="add-payment-sidebar"
-      overlayClass="modal-backdrop"
-      hideOnEsc="true"
-    >
-      <app-add-payment-sidebar-preview></app-add-payment-sidebar-preview>
-    </core-sidebar> -->
   </div>
-  
+</form>

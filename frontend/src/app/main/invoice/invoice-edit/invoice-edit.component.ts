@@ -8,14 +8,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-invoice-add',
-  templateUrl: './invoice-add.component.html',
-  styleUrls: ['./invoice-add.component.scss']
+  selector: 'app-invoice-edit',
+  templateUrl: './invoice-edit.component.html',
+  styleUrls: ['./invoice-edit.component.scss']
 })
-export class InvoiceAddComponent implements OnInit {
+export class InvoiceEditComponent implements OnInit {
   form: FormGroup;
 
   public member: Member;
+  public invoice: any;
 
   public paymentDetails = {
     bankName: 'Stopanska Banka AD - Skopje',
@@ -43,8 +44,18 @@ export class InvoiceAddComponent implements OnInit {
     });
 
     this._invoicePreviewService.getMember(this.route.snapshot.params.member_id)
-      .then(res => {
+      .then((res: any) => {
         this.member = res.member;
+      });
+
+    this._invoicePreviewService.getApiData(this.route.snapshot.params.invoice_id)
+      .then((res: any) => {
+        this.invoice = res.invoice;
+
+        this.form.patchValue({
+          amount: this.invoice.amount,
+          paid: this.invoice.paid
+        })
       })
   }
 
@@ -61,9 +72,14 @@ export class InvoiceAddComponent implements OnInit {
       return;
     }
 
-    this._invoicePreviewService.createInvoice(this.form.value)
+    this._invoicePreviewService.updateInvoice(this.form.value, this.invoice.id)
       .then(() => {
-        this.router.navigate(['/members/invoice', this.member.id])
+        this.router.navigate(['/members/invoice/preview', this.invoice.id]);
+
+        this._snackBar.open('Invoice has been updated!', 'Close', {
+          duration: 2500,
+          panelClass: ['yoshitaka-success-snackbar']
+        });
       }).catch((err) => {
         this._snackBar.open(err.error.message, 'Close', {
           duration: 2500,

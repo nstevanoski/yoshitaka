@@ -45,7 +45,7 @@ export class MemberCreateComponent implements OnInit {
   
         this._snackBar.open('Member has been updated!', 'Close', {
           duration: 2500,
-          panelClass: ['ribbet-success-snackbar']
+          panelClass: ['yoshitaka-success-snackbar']
         });
       } else {
         await this.membersService.createMember(this.form.value);
@@ -53,7 +53,7 @@ export class MemberCreateComponent implements OnInit {
   
         this._snackBar.open('Member has been created!', 'Close', {
           duration: 2500,
-          panelClass: ['ribbet-success-snackbar']
+          panelClass: ['yoshitaka-success-snackbar']
         });
       }
   
@@ -62,7 +62,7 @@ export class MemberCreateComponent implements OnInit {
       console.error(err);
       this._snackBar.open(err.error.message, 'Close', {
         duration: 2500,
-        panelClass: ['ribbet-danger-snackbar']
+        panelClass: ['yoshitaka-danger-snackbar']
       });
     } finally {
       this.isLoading = false;

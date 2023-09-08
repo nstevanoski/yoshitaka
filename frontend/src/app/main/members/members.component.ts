@@ -259,12 +259,12 @@ export class MembersComponent implements OnInit {
           .then(() => {
             this._snackBar.open('Invoice has been deleted successfully!', 'Close', {
               duration: 2500,
-              panelClass: ['ribbet-success-snackbar']
+              panelClass: ['yoshitaka-success-snackbar']
             });
           }).catch((err) => {
             this._snackBar.open(err.error.message, 'Close', {
               duration: 2500,
-              panelClass: ['ribbet-danger-snackbar']
+              panelClass: ['yoshitaka-danger-snackbar']
             });
           })
       }

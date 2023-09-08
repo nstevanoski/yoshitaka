@@ -64,4 +64,10 @@ export class InvoicePreviewService implements Resolve<any> {
 
     return this.http.post(url, form).toPromise();
   }
+
+  updateInvoice(form: any, id: number): Promise<any> {
+    const url = `${environment.apiUrl}/api/members/invoices/preview/${id}`;
+
+    return this.http.put(url, form).toPromise();
+  }
 }

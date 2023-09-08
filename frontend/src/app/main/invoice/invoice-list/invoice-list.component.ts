@@ -110,7 +110,7 @@ export class InvoicesComponent implements OnInit {
 
         this._snackBar.open('Invoice status has been updated successfully!', 'Close', {
           duration: 2500,
-          panelClass: ['ribbet-success-snackbar']
+          panelClass: ['yoshitaka-success-snackbar']
         });
         this.globalLoaderService.hide();
       }).catch((err) => {
@@ -120,7 +120,7 @@ export class InvoicesComponent implements OnInit {
 
         this._snackBar.open(err.error.message, 'Close', {
           duration: 2500,
-          panelClass: ['ribbet-danger-snackbar']
+          panelClass: ['yoshitaka-danger-snackbar']
         });
         this.globalLoaderService.hide();
       })
@@ -219,7 +219,7 @@ export class InvoicesComponent implements OnInit {
       }, error => {
         this._snackBar.open(error.error.message, 'Close', {
           duration: 2500,
-          panelClass: ['ribbet-danger-snackbar']
+          panelClass: ['yoshitaka-danger-snackbar']
         });      
       });
 
@@ -304,12 +304,12 @@ export class InvoicesComponent implements OnInit {
           .then(() => {
             this._snackBar.open('Invoice has been deleted successfully!', 'Close', {
               duration: 2500,
-              panelClass: ['ribbet-success-snackbar']
+              panelClass: ['yoshitaka-success-snackbar']
             });
           }).catch((err) => {
             this._snackBar.open(err.error.message, 'Close', {
               duration: 2500,
-              panelClass: ['ribbet-danger-snackbar']
+              panelClass: ['yoshitaka-danger-snackbar']
             });
           })
       }
