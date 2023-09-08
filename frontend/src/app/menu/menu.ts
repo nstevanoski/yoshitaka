@@ -16,13 +16,13 @@ export const menu: CoreMenu[] = [
         icon: 'users',
         url: 'members'
       },
-      {
-        id: 'settings',
-        title: 'Settings',
-        type: 'item',
-        icon: 'settings',
-        url: 'settings'
-      },
+      // {
+      //   id: 'settings',
+      //   title: 'Settings',
+      //   type: 'item',
+      //   icon: 'settings',
+      //   url: 'settings'
+      // },
     ]
   },
 ]

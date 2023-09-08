@@ -15,8 +15,17 @@ import { CoreSidebarModule } from '@core/components';
 
 import { InvoicePreviewComponent } from './invoice-preview/invoice-preview.component';
 import { InvoicePreviewService } from './invoice-preview/invoice-preview.service';
+import { InvoicesService } from './invoice-list/invoice-list.service';
+import { InvoicesComponent } from './invoice-list/invoice-list.component';
+import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
+import { InvoicesFormComponent } from './invoice-list/forms/invoice-form/invoice-form.component';
 
 const routes: Routes = [
+  {
+    path: ':member_id',
+    component: InvoicesComponent,
+    data: { path: 'user-view/:id', animation: 'InvoicePreviewComponent' }
+  },
   {
     path: 'preview/:id',
     component: InvoicePreviewComponent,
@@ -29,7 +38,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    InvoicePreviewComponent
+    InvoicePreviewComponent,
+    InvoicesComponent,
+    InvoicesFormComponent
   ],
   imports: [
     CommonModule,
@@ -42,8 +53,9 @@ const routes: Routes = [
     CorePipesModule,
     NgbModule,
     NgSelectModule,
+    CardSnippetModule,
     CoreSidebarModule
   ],
-  providers: [InvoicePreviewService]
+  providers: [InvoicePreviewService, InvoicesService]
 })
 export class InvoiceModule { }

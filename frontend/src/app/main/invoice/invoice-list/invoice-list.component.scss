@@ -1,0 +1,24 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+  width: auto !important;
+}
+
+.badge {
+    padding: 1em;
+    border-radius: 6px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.code-icon {
+  display: none !important;
+}
+
+.card-header {
+    background: #0f151e !important;
+}
+
+.datatable-footer-inner.selected-count {
+    background: #0f151e !important;
+}

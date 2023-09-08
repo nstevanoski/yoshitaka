@@ -1,0 +1,111 @@
+<div class="content-wrapper container-xxl p-0">
+  <app-invoice-form></app-invoice-form>
+
+  <div class="content-body">
+    <!-- content-header component -->
+    <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+
+    <!-- Invoices -->
+    <section id="ngx-datatable-kitchen-sink">
+      <core-card-snippet>
+        <h4 class="card-title">Invoices</h4>
+
+        <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="58" class="bootstrap core-bootstrap" [limit]="10"
+          [rowIdentity]="getId" [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50"
+          [externalPaging]="false" [scrollbarH]="true" [selectionType]="SelectionType.checkbox" [selected]="selected"
+          [selectAllRowsOnPage]="false" [limit]="basicSelectedOption" (activate)="onActivate($event)"
+          (select)="onSelect($event)" (sort)="sort($event)">
+          <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+            [resizeable]="false">
+            <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+              let-selectFn="selectFn">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+                <label class="custom-control-label" for="headerChkbxRef"></label>
+              </div>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+              let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                  (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+                <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Id" prop="id" [width]="10">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center text-wrap">
+                <div class="cell-line-height">
+                  <p class="font-medium-1 font-weight-bold line-height-1 mb-25">
+                    {{ row.id }}
+                  </p>
+                  <!-- <span class="text-muted font-small-2"> {{ row.post }}</span> -->
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Paid" prop="row" [width]="120" [sortable]="false">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="font-weight-bold">
+                {{row.paid}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Amount" prop="row" [width]="120" [sortable]="false">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="font-weight-bold">
+                {{row.amount}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="PAID STATUS" prop="row" [width]="120" [sortable]="false">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="font-weight-bold">
+                <div class="badge badge-primary" *ngIf="row.paid === row.amount">PAID</div>
+                <div class="badge badge-danger" *ngIf="row.paid !== row.amount">UNPAID</div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Updated" prop="updated_at" [width]="120">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              {{ value | date: 'dd/MM/yyyy' }}
+            </ng-template>
+          </ngx-datatable-column>
+          <!-- <ngx-datatable-column name="# Tags" prop="tags.length" [width]="100"></ngx-datatable-column> -->
+          <ngx-datatable-column name="Actions" [width]="120" [sortable]="false">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <div ngbDropdown container="body">
+                  <a ngbDropdownToggle href="javascript:void(0);" class="hide-arrow" id="dropdownBrowserState"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i data-feather="more-vertical" class="text-primary cursor-pointer mr-50"></i>
+                  </a>
+                  <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownBrowserState">
+                    <a href="javascript:void(0)" (click)="deleteInvoice(row)" ngbDropdownItem
+                      class="d-flex align-items-center"><i data-feather="trash-2" class="mr-50"></i> Delete</a>
+                  </div>
+                </div>
+
+                <div (click)="openEditModal(row)">
+                  <i data-feather="edit" class="text-primary cursor-pointer"></i>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-footer>
+            <ng-template ngx-datatable-footer-template>
+              <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'"
+                [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+                [pagerNextIcon]="'datatable-icon-skip'" [size]="basicSelectedOption" [count]="totalLength"
+                [hidden]="!((totalLength / basicSelectedOption) > 1)" (change)="onPaginateChange($event)">
+              </datatable-pager>
+            </ng-template>
+          </ngx-datatable-footer>
+        </ngx-datatable>
+      </core-card-snippet>
+    </section>
+    <!--/ invoices -->
+  </div>
+</div>
