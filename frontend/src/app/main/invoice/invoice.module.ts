@@ -19,12 +19,13 @@ import { InvoicesService } from './invoice-list/invoice-list.service';
 import { InvoicesComponent } from './invoice-list/invoice-list.component';
 import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
 import { InvoicesFormComponent } from './invoice-list/forms/invoice-form/invoice-form.component';
+import { InvoiceAddComponent } from './invoice-add/invoice-add.component';
 
 const routes: Routes = [
   {
     path: ':member_id',
     component: InvoicesComponent,
-    data: { path: 'user-view/:id', animation: 'InvoicePreviewComponent' }
+    data: { animation: 'InvoicesComponent' }
   },
   {
     path: 'preview/:id',
@@ -32,7 +33,12 @@ const routes: Routes = [
     resolve: {
       data: InvoicePreviewService
     },
-    data: { path: 'user-view/:id', animation: 'InvoicePreviewComponent' }
+    data: { animation: 'InvoicePreviewComponent' }
+  },
+  {
+    path: 'add/:member_id',
+    component: InvoiceAddComponent,
+    data: { animation: 'InvoiceAddComponent' }
   }
 ];
 
@@ -40,7 +46,8 @@ const routes: Routes = [
   declarations: [
     InvoicePreviewComponent,
     InvoicesComponent,
-    InvoicesFormComponent
+    InvoicesFormComponent,
+    InvoiceAddComponent
   ],
   imports: [
     CommonModule,

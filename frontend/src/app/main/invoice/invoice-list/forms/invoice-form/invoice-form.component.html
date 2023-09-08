@@ -4,7 +4,7 @@
             <input type="search" placeholder="Search by invoice name" class="form-control" formControlName="search" />
         </div> -->
         <div>
-            <button class="btn btn-primary" (click)="createInvoice()" rippleEffect>
+            <button class="btn btn-primary" [routerLink]="['/members/invoice/add', member_id]" routerLinkActive="router-link-active"  rippleEffect>
                 <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add Invoice</span>
             </button>
         </div>

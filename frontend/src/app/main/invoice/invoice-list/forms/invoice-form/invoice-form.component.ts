@@ -12,6 +12,7 @@ import { InvoicesService } from '../../invoice-list.service';
 })
 export class InvoicesFormComponent implements OnInit, OnDestroy  {
   form: FormGroup;
+  member_id: number;
 
   constructor(
     private fb: FormBuilder,
@@ -23,6 +24,8 @@ export class InvoicesFormComponent implements OnInit, OnDestroy  {
       sort: ['desc'],
       per_page: [10]
     });
+
+    this.member_id = this.invoicesService.memberId;
   }
 
   ngOnInit(): void {

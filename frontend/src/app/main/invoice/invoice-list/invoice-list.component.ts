@@ -45,6 +45,8 @@ export class InvoicesComponent implements OnInit {
   public chkBoxSelected = [];
   public SelectionType = SelectionType;
 
+  public member_id: number;
+
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
@@ -193,9 +195,11 @@ export class InvoicesComponent implements OnInit {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english);
 
-    if (this.route.snapshot.params.member_id) {
-      this._datatablesService.memberId = this.route.snapshot.params.member_id;
-      this._datatablesService.list(1, this.route.snapshot.params.member_id)
+    this.member_id = this.route.snapshot.params.member_id;
+
+    if (this.member_id) {
+      this._datatablesService.memberId = this.member_id;
+      this._datatablesService.list(1, this.member_id)
     }
   }
 
