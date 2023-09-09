@@ -130,10 +130,7 @@ const nodemailer = require('nodemailer');
 
 exports.sendEmail = async (req, res) => {
   try {
-    const id = req.params.id;
-    const member = await Member.findByPk(id);
-
-    const { subject, message } = req.body;
+    const { email, subject, message } = req.body;
 
     const transporter = nodemailer.createTransport({
       service: 'gmail', 
@@ -145,14 +142,14 @@ exports.sendEmail = async (req, res) => {
 
     const mailOptions = {
       from: 'stevanoski.nikola@uklo.edu.mk',
-      to: member.email,
+      to: email,
       subject: subject,
       text: message,
     };
 
     const info = await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ message: `Email sent successfully to ${member.email}` });
+    res.status(200).json({ message: `Email sent successfully` });
   } catch (err) {
     console.error('Error sending email:', err);
 

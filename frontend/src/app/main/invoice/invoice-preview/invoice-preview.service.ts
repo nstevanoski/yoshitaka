@@ -70,4 +70,10 @@ export class InvoicePreviewService implements Resolve<any> {
 
     return this.http.put(url, form).toPromise();
   }
+
+  sendEmail(form: any): Promise<any> {
+    const url = `${environment.apiUrl}/api/members/send-email`;
+
+    return this.http.post(url, form).toPromise();
+  }
 }

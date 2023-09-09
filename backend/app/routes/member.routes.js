@@ -18,7 +18,7 @@ module.exports = app => {
     router.put("/:id", controller.update);
 
     // Send email to member
-    router.post("/send-email/:id", controller.sendEmail);
+    router.post("/send-email", controller.sendEmail);
   
     // Delete a Member with id
     router.delete("/:id", controller.delete); 

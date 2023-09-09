@@ -1,41 +1,32 @@
-<div class="slideout-content">
-    <!-- Modal To Add New User Starts-->
-    <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
-        <div class="modal-dialog sidebar-lg">
-            <div class="modal-content p-0">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                    (click)="toggleSidebar('invoice-sidebar')">
-                    ×
-                </button>
-                <div class="modal-header mb-1">
-                    <h5 class="modal-title">
-                        <span class="align-middle">Send Invoice</span>
-                    </h5>
-                </div>
-                <div class="modal-body flex-grow-1">
-                    <form>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="slideout-content">
+        <!-- Modal To Add New User Starts-->
+        <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
+            <div class="modal-dialog sidebar-lg">
+                <div class="modal-content p-0">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        (click)="toggleSidebar('invoice-sidebar')">
+                        ×
+                    </button>
+                    <div class="modal-header mb-1">
+                        <h5 class="modal-title">
+                            <span class="align-middle">Send Email</span>
+                        </h5>
+                    </div>
+                    <div class="modal-body flex-grow-1">
                         <div class="form-group">
                             <label for="invoice-subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="invoice-subject"
-                                value="Invoice of purchased Admin Templates" placeholder="Invoice regarding goods" />
+                            <input type="text" class="form-control" id="invoice-subject" value="Payment request"
+                                formControlName="subject" placeholder="Payment request" />
                         </div>
                         <div class="form-group">
                             <label for="invoice-message" class="form-label">Message</label>
                             <textarea class="form-control" name="invoice-message" id="invoice-message" cols="3"
-                                rows="11" placeholder="Message...">
-Hi,
-                                    
-I hope this message finds you well. We wanted to bring to your attention an important matter regarding your invoice for the Yoshitaka Karate Club.
-
-We kindly request your prompt attention to settle the outstanding invoice, as it is essential for the continued smooth operation of our club. Your timely payment will ensure that we can continue providing you with the high-quality karate training and services that you have come to expect.
-
-Best regards,
-Nikola
-</textarea>
+                                rows="11" placeholder="Message..." formControlName="message"></textarea>
                         </div>
                         <div class="form-group d-flex flex-wrap mt-2">
-                            <button type="button" class="btn btn-primary mr-1"
-                                (click)="toggleSidebar('invoice-sidebar')" rippleEffect>
+                            <button type="submit" class="btn btn-primary mr-1" rippleEffect [disabled]="isLoading">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isLoading"></span>
                                 Send
                             </button>
                             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
@@ -43,10 +34,10 @@ Nikola
                                 Cancel
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- Modal To Add New User Ends-->
     </div>
-    <!-- Modal To Add New User Ends-->
-</div>
+</form>
