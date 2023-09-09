@@ -21,11 +21,11 @@ require("./app/routes/user.routes")(app);
 require("./app/routes/member.routes")(app);
 require("./app/routes/member_invoice.routes")(app);
 
-// app.use(express.static(__dirname + '/dist/frontend'));
+app.use(express.static(__dirname + '/dist/admin'));
 
-// app.get('/*', function(req, res) {
-//   res.sendFile(__dirname + '/dist/frontend/index.html');
-// });
+app.get('/*', function(req, res) {
+  res.sendFile(__dirname + '/dist/admin/index.html');
+});
 
 app.use(function(req, res, next) {
   res.status(404).send({message: 'Route not found'});
