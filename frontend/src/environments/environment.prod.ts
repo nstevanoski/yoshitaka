@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiUrl: ''
+  apiUrl: 'https://diplomska.nstevanoski.com'
 };
