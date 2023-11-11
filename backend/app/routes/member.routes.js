@@ -10,6 +10,9 @@ module.exports = app => {
 
     // Retrieve all Members
     router.get("/", controller.getAll);
+
+    // Retrieve all Members with unpaid invoices
+    router.get("/unpaid", controller.unpaidInvoicesReport);
   
     // Retrieve a single Member with id
     router.get("/:id", controller.findOne); 

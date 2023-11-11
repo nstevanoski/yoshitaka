@@ -1,5 +1,7 @@
 const db = require("../models");
 const Member = db.member;
+const Invoice = db.memberInvoice;
+const Service = db.invoiceService;
 const Op = db.Op;
 
 const getPagination = (page, size) => {
@@ -179,5 +181,49 @@ exports.delete = async (req, res) => {
     res.status(500).send({
       message: "Could not delete Member with id=" + id
     });
+  }
+};
+
+exports.unpaidInvoicesReport = async (req, res) => {
+  try {
+    const unpaidInvoices = await Member.findAll({
+      include: [
+        {
+          model: Invoice,
+          as: 'invoices',
+          include: [{ model: Service, as: 'services' }]
+        }
+      ],
+      where: {
+        // Additional condition for members, if needed
+      }
+    });
+
+    const reportData = unpaidInvoices
+      .filter(member => {
+        // Filter out members with all paid services
+        return member.invoices.some(invoice =>
+          invoice.services.some(service => service.left_to_be_paid > 0)
+        );
+      })
+      .map(member => {
+        const unpaidInvoicesForMember = member.invoices.filter(invoice => {
+          const isUnpaid = invoice.services.some(service => service.left_to_be_paid === 0);
+          return isUnpaid;
+        });
+
+        return {
+          member_id: member.id,
+          member_full_name: `${member.first_name} ${member.last_name}`, 
+          unpaid_invoices: unpaidInvoicesForMember.map(invoice => ({
+            invoice_id: invoice.id,
+            status: "UNPAID"
+          }))
+        };
+      });
+
+    res.send(reportData);
+  } catch (err) {
+    res.status(500).send(err.message);
   }
 };
