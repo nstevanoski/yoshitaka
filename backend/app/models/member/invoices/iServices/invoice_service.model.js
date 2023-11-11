@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize, DataTypes) => {
-    const MemberInvoice = sequelize.define(
-      "member_invoice",
+    const InoviceService = sequelize.define(
+      "invoice_service",
       {
         id: {
           type: DataTypes.INTEGER,
@@ -8,13 +8,25 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
           autoIncrement: true,
           primaryKey: true,
         },
-        memberId: {
+        memberInvoiceId: {
           allowNull: false,
           type: DataTypes.INTEGER,
         },
-        paymentDate: {
-          allowNull: true,
-          type: DataTypes.DATE,
+        service_name: {
+            allowNull: false,
+            type: DataTypes.STRING,
+        },
+        has_paid: {
+            allowNull: true,
+            type: DataTypes.INTEGER,
+        },
+        left_to_be_paid: {
+            allowNull: true,
+            type: DataTypes.INTEGER,
+        },
+        amount: {
+            allowNull: true,
+            type: DataTypes.INTEGER,
         },
         created_at: {
           allowNull: false,
@@ -33,6 +45,6 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       }
     );
   
-    return MemberInvoice;
+    return InoviceService;
   };
   

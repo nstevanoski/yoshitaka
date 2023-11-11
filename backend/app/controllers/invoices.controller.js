@@ -1,5 +1,7 @@
 const db = require("../models");
 const Invoice = db.memberInvoice;
+const Service = db.invoiceService;
+const Member = db.member;
 const Op = db.Op;
 
 const getPagination = (page, size) => {
@@ -20,17 +22,14 @@ const getPagingData = (data, page, limit) => {
 // CREATE Invoice
 exports.create = async (req, res) => {
     try {
-        const { memberId, paid, amount, paymentStatus, paymentDate } = req.body;
+        const { memberId } = req.body;
 
-        if (!memberId || !amount || !paymentStatus || !paymentDate) {
-            return res.status(400).send({ message: 'All fields are required!' });
+        if (!memberId) {
+            return res.status(400).send({ message: 'Something went wrong, member ID is required!' });
         }
 
         const invoiceObject = {
             memberId,
-            paid,
-            amount,
-            paymentDate
         };
 
         const createdInvoice = await Invoice.create(invoiceObject);
@@ -56,6 +55,7 @@ exports.getAll = async (req, res) => {
 
         const { limit, offset } = getPagination(page, size); // Helper function to calculate limit and offset for pagination.
 
+        const member = await Member.findByPk(id);
         const invoices = await Invoice.findAndCountAll({
             where: {
                 member_id: id, // Filter by member ID
@@ -72,7 +72,7 @@ exports.getAll = async (req, res) => {
             limit
         );
 
-        res.send(response); // Sending the response with the paginated data.
+        res.send(Object.assign(response, {member})); // Sending the response with the paginated data.
     } catch (err) {
         res.status(400).send(err.message); // Handling errors and sending an error response with a status code of 400.
     }
@@ -83,7 +83,7 @@ exports.findOne = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const data = await Invoice.findByPk(id);
+        const data = await Invoice.findByPk(id, {include: [{association: "services"}]});
 
         if (!data) {
             return res.status(404).json({ message: 'Invoice not found' });
@@ -144,6 +144,56 @@ exports.delete = async (req, res) => {
     } catch (err) {
         res.status(500).send({
             message: "Could not delete Invoice with id=" + id
+        });
+    }
+};
+
+exports.createService = async (req, res) => {
+    try {
+        const memberInvoiceId = req.params.invoice_id;
+        const { service_name, has_paid, amount } = req.body;
+
+        if (!memberInvoiceId || !service_name || !has_paid || !amount) {
+            return res.status(400).send({ message: 'Something went wrong, all fields are required!' });
+        }
+
+        const serviceObject = {
+            memberInvoiceId,
+            service_name,
+            has_paid,
+            amount,
+            left_to_be_paid: amount - has_paid
+        };
+
+        const createdService = await Service.create(serviceObject);
+        return res.json(createdService);
+    } catch (error) {
+        console.error('Error on invoice: ', error);
+        return res.status(400).send({ message: error.message });
+    }
+};
+
+exports.updateService = async (req, res) => {
+    try {
+        const id = req.params.invoice_id;
+        const { body } = req;
+
+        const [numUpdatedRows] = await Service.update(body, {
+            where: { id: id }
+        });
+
+        if (numUpdatedRows === 1) {
+            res.send({
+                message: "Service was updated successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot update Service with id=${id}. Maybe Service was not found or req.body is empty!`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: "Error updating Service with id=" + id
         });
     }
 };

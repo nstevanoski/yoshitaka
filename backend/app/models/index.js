@@ -30,9 +30,13 @@ db.role = require("./role.model.js")(sequelize, Sequelize, DataTypes);
 
 db.member = require("./member/member.model.js")(sequelize, Sequelize, DataTypes);
 db.memberInvoice = require("./member/invoices/member_invoice.model.js")(sequelize, Sequelize, DataTypes);
+db.invoiceService = require("./member/invoices/iServices/invoice_service.model.js")(sequelize, Sequelize, DataTypes);
 
 db.member.hasMany(db.memberInvoice, { as: "invoices" });
 db.memberInvoice.belongsTo(db.member);
+
+db.memberInvoice.hasMany(db.invoiceService, { as: "services" });
+db.invoiceService.belongsTo(db.memberInvoice);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
