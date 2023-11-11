@@ -42,48 +42,62 @@ exports.create = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     try {
-        const id = req.params.member_id; // Extracting the member ID from the request parameters.
-        const { page, size, keyword, order_by, payment_status } = req.query; // Extracting query parameters from the request.
+        const id = req.params.member_id;
+        const { page, size, keyword, order_by, payment_status } = req.query;
 
         let condition = null;
 
-        if (payment_status) {
-            condition = {
-                payment_status: payment_status // Exact match on payment_status
-            };
-        }
+        // if (payment_status) {
+        //     condition = {
+        //         payment_status: payment_status
+        //     };
+        // }
 
-        const { limit, offset } = getPagination(page, size); // Helper function to calculate limit and offset for pagination.
+        const { limit, offset } = getPagination(page, size);
 
         const member = await Member.findByPk(id);
-        const invoices = await Invoice.findAndCountAll({
+        const invoicesWithServices = await Invoice.findAndCountAll({
             where: {
-                member_id: id, // Filter by member ID
-                ...condition // Apply additional conditions if a keyword is provided
+                member_id: id,
+                ...condition
             },
-            order: [['id', order_by || 'asc']], // Sorting by ID in ascending order by default
+            order: [['id', order_by || 'asc']],
             limit,
             offset,
+            include: [{ model: Service, as: 'services' }] // Include associated services
+        });
+
+        const invoices = invoicesWithServices.rows.map(invoice => {
+            const isPaid = invoice.services.every(service => service.left_to_be_paid === 0);
+            const status = isPaid ? "PAID" : "UNPAID";
+            const leftAmount = invoice.services.reduce((acc, service) => acc + service.left_to_be_paid, 0);
+
+            return {
+                ...invoice.get(),
+                status,
+                left_amount: leftAmount
+            };
         });
 
         const response = getPagingData(
-            invoices,
+            { count: invoicesWithServices.count, rows: invoices },
             page,
             limit
         );
 
-        res.send(Object.assign(response, {member})); // Sending the response with the paginated data.
+        res.send(Object.assign(response, { member }));
     } catch (err) {
-        res.status(400).send(err.message); // Handling errors and sending an error response with a status code of 400.
+        res.status(400).send(err.message);
     }
 };
+
 
 // FIND Invoice
 exports.findOne = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const data = await Invoice.findByPk(id, {include: [{association: "services"}]});
+        const data = await Invoice.findByPk(id, { include: [{ association: "services" }] });
 
         if (!data) {
             return res.status(404).json({ message: 'Invoice not found' });
@@ -91,7 +105,13 @@ exports.findOne = async (req, res) => {
 
         const member = await Member.findByPk(data.memberId);
 
-        res.send({ invoice: data, member });
+        // Check if all services have left_to_be_paid equal to 0
+        const isPaid = data.services.every(service => service.left_to_be_paid === 0);
+
+        // Determine the status based on the result
+        const status = isPaid ? "PAID" : "UNPAID";
+
+        res.send({ invoice: data, member, status });
     } catch (error) {
         res.status(500).send({
             message: `Error retrieving invoice with id ${id}`
