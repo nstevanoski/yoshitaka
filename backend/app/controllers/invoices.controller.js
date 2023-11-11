@@ -89,7 +89,9 @@ exports.findOne = async (req, res) => {
             return res.status(404).json({ message: 'Invoice not found' });
         }
 
-        res.send({ invoice: data });
+        const member = await Member.findByPk(data.memberId);
+
+        res.send({ invoice: data, member });
     } catch (error) {
         res.status(500).send({
             message: `Error retrieving invoice with id ${id}`
