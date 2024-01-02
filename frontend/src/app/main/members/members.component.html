@@ -24,6 +24,12 @@
                 <div class="members-holder__description">
                     {{member.email}}
                 </div>
+                <div class="badge badge-danger font-weight-bold mt-2" *ngIf="member.total_left_to_be_paid !== 0">
+                    Left to be paid: {{member.total_left_to_be_paid}}
+                </div>
+                <div class="badge badge-success font-weight-bold mt-2" *ngIf="member.total_left_to_be_paid === 0">
+                    All payments completed
+                </div>
                 <div class="members-holder__view-details" [routerLink]="['/members/invoice/', member.id]">
                     View invoices
                 </div>

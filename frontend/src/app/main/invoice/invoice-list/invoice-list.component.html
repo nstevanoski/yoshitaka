@@ -54,25 +54,11 @@
               </div>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Paid" prop="row" [width]="120" [sortable]="false">
-            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
-              <div class="font-weight-bold">
-                {{row.paid}}
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Amount" prop="row" [width]="120" [sortable]="false">
-            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
-              <div class="font-weight-bold">
-                {{row.amount}}
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
           <ngx-datatable-column name="PAID STATUS" prop="row" [width]="120" [sortable]="false">
             <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
               <div class="font-weight-bold">
-                <div class="badge badge-primary" *ngIf="row.paid === row.amount">PAID</div>
-                <div class="badge badge-danger" *ngIf="row.paid !== row.amount">UNPAID</div>
+                <div class="badge badge-primary" *ngIf="row.status === 'PAID'">PAID</div>
+                <div class="badge badge-danger" *ngIf="row.status === 'UNPAID'">UNPAID</div>
               </div>
             </ng-template>
           </ngx-datatable-column>

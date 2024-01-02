@@ -215,6 +215,10 @@ export class MembersService implements Resolve<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/members`).toPromise();
   }
 
+  getMemberById(id: number): Promise<Member[]> {
+    return this.http.get<any>(`${environment.apiUrl}/api/members/${id}`).toPromise();
+  }
+
   createMember(form: any): Promise<Member> {
     return this.http.post<Member>(`${environment.apiUrl}/api/members`, form).toPromise();
   }

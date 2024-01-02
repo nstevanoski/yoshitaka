@@ -47,6 +47,7 @@ exports.create = async (req, res) => {
   }
 };
 
+
 exports.getAll = async (req, res) => {
   try {
     const { page, size, keyword, order_by } = req.query;
@@ -69,10 +70,21 @@ exports.getAll = async (req, res) => {
       order: [['id', order_by || 'asc']],
       limit,
       offset,
+      include: [{ association: "invoices", include: [{ association: "services" }] }],
+    });
+
+    // Calculate the total sum of left_to_be_paid for each member
+    const membersWithTotalLeftToBePaid = members.rows.map((member) => {
+      const totalLeftToBePaid = member.invoices.reduce((sum, invoice) => {
+        return sum + invoice.services.reduce((serviceSum, service) => {
+          return serviceSum + (service.left_to_be_paid || 0);
+        }, 0);
+      }, 0);
+      return { id: member.id, first_name: member.first_name, last_name: member.last_name, email: member.email, total_left_to_be_paid: totalLeftToBePaid };
     });
 
     const response = getPagingData(
-      members,
+      { count: members.count, rows: membersWithTotalLeftToBePaid },
       page,
       limit
     );
@@ -82,6 +94,7 @@ exports.getAll = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+
 
 // FIND MEMBER
 exports.findOne = async (req, res) => {
