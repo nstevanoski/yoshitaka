@@ -23,10 +23,10 @@
                       <span class="invoice-number">#{{ apiData.id }}</span>
                     </h4>
                     <div class="d-flex justify-content-end mb-1">
-                      <div class="badge badge-primary" *ngIf="apiData.amount === apiData.paid">
+                      <div class="badge badge-primary" *ngIf="apiData.status === 'PAID'">
                         PAID
                       </div>
-                      <div class="badge badge-danger" *ngIf="apiData.amount !== apiData.paid">
+                      <div class="badge badge-danger" *ngIf="apiData.status === 'UNPAID'">
                         UNPAID
                       </div>
                     </div>
