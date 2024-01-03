@@ -30,6 +30,7 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
     swiftCode: 'ST91905'
   };
 
+  public paymentStatus: 'PAID' | 'UNPAID';
   public services: any;
   
 
@@ -74,6 +75,7 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
       this.apiData = response.invoice;
       this.member = response.member;
 
+      this.paymentStatus = response.status;
       this.services = this.apiData.services;
     });
   }

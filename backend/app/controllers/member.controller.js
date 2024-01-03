@@ -159,7 +159,7 @@ exports.sendEmail = async (req, res) => {
       from: 'stevanoski.nikola@uklo.edu.mk',
       to: email,
       subject: subject,
-      text: message,
+      html: message,
     };
 
     const info = await transporter.sendMail(mailOptions);
