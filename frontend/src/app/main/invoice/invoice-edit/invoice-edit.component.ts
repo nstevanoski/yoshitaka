@@ -43,14 +43,10 @@ export class InvoiceEditComponent implements OnInit {
       paymentDate: this.fb.control('')
     });
 
-    this._invoicePreviewService.getMember(this.route.snapshot.params.member_id)
-      .then((res: any) => {
-        this.member = res.member;
-      });
-
     this._invoicePreviewService.getApiData(this.route.snapshot.params.invoice_id)
       .then((res: any) => {
         this.invoice = res.invoice;
+        this.member = res.member;
 
         this.form.patchValue({
           amount: this.invoice.amount,

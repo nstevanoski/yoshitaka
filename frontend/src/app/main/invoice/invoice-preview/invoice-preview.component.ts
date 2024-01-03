@@ -70,13 +70,7 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._invoicePreviewService.onInvoicPreviewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
       this.apiData = response.invoice;
-
-      if (this.apiData.memberId) {
-        this._invoicePreviewService.getMember(this.apiData.memberId)
-          .then((res: any) => {
-            this.member = res.member;
-          })
-      }
+      this.member = response.member;
     });
   }
 
