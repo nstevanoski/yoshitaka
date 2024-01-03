@@ -29,6 +29,8 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
     iban: 'STB95476213874685',
     swiftCode: 'ST91905'
   };
+
+  public services: any;
   
 
   // private
@@ -71,7 +73,29 @@ export class InvoicePreviewComponent implements OnInit, OnDestroy {
     this._invoicePreviewService.onInvoicPreviewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
       this.apiData = response.invoice;
       this.member = response.member;
+
+      this.services = this.apiData.services;
     });
+  }
+
+  getTotalAmount(invoice: any) {
+    let sum: number = 0;
+
+    invoice.services.forEach((service) => {
+      sum += service.amount;
+    });
+
+    return sum;
+  }
+
+  getTotalPaid(invoice: any) {
+    let sum: number = 0;
+
+    invoice.services.forEach((service) => {
+      sum += service.has_paid;
+    });
+
+    return sum;
   }
 
   /**

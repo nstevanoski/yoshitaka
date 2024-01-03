@@ -78,27 +78,29 @@
                   </div>
                 </div>
               </div>
-              <!-- Address And Contact Ends -->
-  
-              <!-- Invoice Description Starts -->
-              <div class="table-responsive border-bottom">
+              <div class="table-responsive border-bottom" *ngIf="services">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th class="py-1">Service</th>
-                      <th class="py-1 text-right">Total</th>
+                      <th class="py-1">Service Name</th>
+                      <th class="py-1">Amount</th>
+                      <th class="py-1">Has Paid</th>
+                      <th class="py-1 text-right">Left To Be Paid</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr *ngFor="let service of services">
+                      <td class="py-1" >
+                        <p class="card-text font-weight-bold mb-25">{{service.service_name}}</p>
+                      </td>
                       <td class="py-1">
-                        <p class="card-text font-weight-bold mb-25">Course</p>
-                        <p class="card-text text-nowrap">
-                          Каrate course month subscription
-                        </p>
+                        <span class="font-weight-bold">{{ service.amount }} den</span>
+                      </td>
+                      <td class="py-1">
+                        <span class="font-weight-bold">{{ service.has_paid }} den</span>
                       </td>
                       <td class="py-1 text-right">
-                        <span class="font-weight-bold">{{ apiData.amount }} den</span>
+                        <span class="font-weight-bold">{{ service.left_to_be_paid }} den</span>
                       </td>
                     </tr>
                   </tbody>
@@ -111,18 +113,14 @@
                   </div>
                   <div class="col-md-6 d-flex justify-content-end order-md-2 order-1">
                     <div class="invoice-total-wrapper">
-                      <div class="invoice-total-item">
-                        <p class="invoice-total-title">Paid:</p>
-                        <p class="invoice-total-amount">{{ apiData.paid }} den</p>
-                      </div>
-                      <div class="invoice-total-item" *ngIf="apiData.amount !== apiData.paid">
-                        <p class="invoice-total-title">Dept:</p>
-                        <p class="invoice-total-amount">{{ apiData.amount - apiData.paid }} den</p>
+                      <div class="invoice-total-item" *ngIf="getTotalAmount(apiData) !== getTotalPaid(apiData)">
+                        <p class="invoice-total-title">Debt:</p>
+                        <p class="invoice-total-amount">{{ getTotalAmount(apiData)- getTotalPaid(apiData) }} den</p>
                       </div>
                       <hr class="my-50" />
                       <div class="invoice-total-item">
-                        <p class="invoice-total-title">Total:</p>
-                        <p class="invoice-total-amount">{{ apiData.paid }} den</p>
+                        <p class="invoice-total-title">Total Paid:</p>
+                        <p class="invoice-total-amount">{{ getTotalPaid(apiData) }} den</p>
                       </div>
                     </div>
                   </div>
