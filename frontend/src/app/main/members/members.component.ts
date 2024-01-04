@@ -16,6 +16,7 @@ import { MembersService } from './members.service';
 import { Member } from '../models/member.model';
 import { MemberCreateComponent } from './member-create/member-create.component';
 
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-members',
@@ -47,6 +48,8 @@ export class MembersComponent implements OnInit {
   public SelectionType = SelectionType;
 
   public listType: string = 'grid';
+
+  public isExportLoading = false;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -281,5 +284,28 @@ export class MembersComponent implements OnInit {
           })
       }
     })
+  }
+
+  exportToExcel(): void {
+    this.isExportLoading = true;
+
+    this._datatablesService.getUnpaidMembers()
+      .then((res) => {
+        this.exportDataToExcel(res, 'unpaid_members');
+      }).finally(() => {
+        this.isExportLoading = false;
+      })
+  }
+
+  exportDataToExcel(data: any[], fileName: string): void {
+    // Create a worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+  
+    // Create a workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+    // Save the workbook to a file
+    XLSX.writeFile(wb, fileName + '.xlsx');
   }
 }

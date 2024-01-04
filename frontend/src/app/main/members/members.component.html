@@ -2,6 +2,10 @@
     <app-members-form></app-members-form>
 
     <div class="d-flex justify-content-end mt-2">
+        <div class="btn btn-warning mr-2" (click)="exportToExcel()">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isExportLoading"></span>
+            Export unpaid members
+        </div>
         <div>
             <span class="btn material-icons mr-1" (click)="changeListType('grid')" [ngClass]="{'btn-primary': listType === 'grid', 'btn-secondary': listType === 'list'}">
                 grid_view

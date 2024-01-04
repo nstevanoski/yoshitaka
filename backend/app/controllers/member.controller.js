@@ -233,18 +233,28 @@ exports.unpaidInvoicesReport = async (req, res) => {
         );
       })
       .map(member => {
+        const totalLeftToBePaidForMember = member.invoices.reduce((sum, invoice) => {
+          const unpaidServices = invoice.services.filter(service => service.left_to_be_paid > 0);
+          const totalLeftToBePaidForInvoice = unpaidServices.reduce((serviceSum, service) => {
+            return serviceSum + (service.left_to_be_paid || 0);
+          }, 0);
+          return sum + totalLeftToBePaidForInvoice;
+        }, 0);
+
         const unpaidInvoicesForMember = member.invoices.filter(invoice => {
-          const isUnpaid = invoice.services.some(service => service.left_to_be_paid === 0);
+          const isUnpaid = invoice.services.some(service => service.left_to_be_paid > 0);
           return isUnpaid;
         });
 
         return {
-          member_id: member.id,
-          member_full_name: `${member.first_name} ${member.last_name}`, 
-          unpaid_invoices: unpaidInvoicesForMember.map(invoice => ({
-            invoice_id: invoice.id,
-            status: "UNPAID"
-          }))
+          id: member.id,
+          name: `${member.first_name} ${member.last_name}`, 
+          email: member.email, 
+          unpaid: `${totalLeftToBePaidForMember} den`,
+          // unpaid_invoices: unpaidInvoicesForMember.map(invoice => ({
+          //   invoice_id: invoice.id,
+          //   status: "UNPAID"
+          // }))
         };
       });
 

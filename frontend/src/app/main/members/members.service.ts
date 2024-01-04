@@ -226,4 +226,8 @@ export class MembersService implements Resolve<any> {
   updateMember(form: any, id: number): Promise<Member> {
     return this.http.put<Member>(`${environment.apiUrl}/api/members/${id}`, form).toPromise();
   }
+
+  getUnpaidMembers(): Promise<Member[]> {
+    return this.http.get<any>(`${environment.apiUrl}/api/members/unpaid`).toPromise();
+  }
 }
