@@ -55,13 +55,36 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   createServiceFormGroup(service?: any): FormGroup {
-    return this.fb.group({
+    const serviceFormGroup = this.fb.group({
       id: [service ? service.id : ''],
       service_name: [service ? service.service_name : '', Validators.required],
-      amount: [service ? service.amount : '', Validators.required],
-      has_paid: [service ? service.has_paid : ''],
-      left_to_be_paid: [service ? service.left_to_be_paid : '']
+      amount: [service ? service.amount : 0, Validators.required],
+      has_paid: [service ? service.has_paid : 0],
+      left_to_be_paid: [{value: service ? service.left_to_be_paid : 0, disabled: true}]
     });
+
+    return serviceFormGroup;
+  }
+
+  subscribeToAmountAndHasPaidChanges(serviceFormGroup: FormGroup): void {
+    serviceFormGroup.get('amount').valueChanges.subscribe((amount) => {
+      this.updateLeftToBePaid(serviceFormGroup);
+    });
+  
+    serviceFormGroup.get('has_paid').valueChanges.subscribe((hasPaid) => {
+      this.updateLeftToBePaid(serviceFormGroup);
+    });
+  }
+
+  updateLeftToBePaid(serviceFormGroup: FormGroup): void {
+    const amount = +serviceFormGroup.get('amount').value;
+    const hasPaid = +serviceFormGroup.get('has_paid').value;
+  
+    const leftToBePaid = amount - hasPaid;
+    serviceFormGroup.get('left_to_be_paid').setValue(leftToBePaid);
+  
+    // Disable the "left_to_be_paid" control
+    serviceFormGroup.get('left_to_be_paid').disable();
   }
 
   get services(): FormArray {
@@ -69,22 +92,42 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   addServiceRow(invoice): void {
+    const servicesFormArray = this.form.get('services') as FormArray;
+    let newServiceFormGroup: any;
+
     if (invoice) {
       this.invoice.services.forEach(service => {
-        this.services.push(this.createServiceFormGroup(service));
+        newServiceFormGroup = this.createServiceFormGroup(service)
+        this.services.push(newServiceFormGroup);
       });
     } else {
-      this.services.push(this.createServiceFormGroup());
+      newServiceFormGroup = this.createServiceFormGroup()
+      this.services.push(newServiceFormGroup);
     }
+
+    this.subscribeToAmountAndHasPaidChanges(newServiceFormGroup)
   }
 
   onSubmit() {
-    this._invoicePreviewService.createUpdateInvoiceServices(this.form.value.services, this.invoice.id)
+    const services = this.form.value.services;
+    const hasInvalidService = services.some(service => service.has_paid > service.amount);
+
+    if (hasInvalidService) {
+      this._snackBar.open('Error: Has Paid value cannot be higher than the service amount.', 'Close', {
+        duration: 2500,
+        panelClass: ['yoshitaka-danger-snackbar']
+      });
+      return; // Stop the submission
+    }
+
+    this._invoicePreviewService.createUpdateInvoiceServices(services, this.invoice.id)
       .then(() => {
         this._snackBar.open('Invoice has been updated!', 'Close', {
           duration: 2500,
           panelClass: ['yoshitaka-success-snackbar']
         });
+
+        this.router.navigate(['/members/invoice', this.member.id])
       }).catch((err) => {
         this._snackBar.open(err.error.message, 'Close', {
           duration: 2500,

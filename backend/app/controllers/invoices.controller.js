@@ -224,6 +224,8 @@ exports.updateService = async (req, res) => {
 
             try {
                 if (id) {
+                    update.left_to_be_paid = update.amount - update.has_paid;
+
                     // Update existing service
                     const [numUpdatedRows] = await Service.update(update, {
                         where: { id: id }

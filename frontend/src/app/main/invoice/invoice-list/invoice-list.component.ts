@@ -229,12 +229,6 @@ export class InvoicesComponent implements OnInit {
         this.totalLength = totalLength;
       });
 
-    this._datatablesService.onPerPageChanged
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((perPage) => {
-        this.basicSelectedOption = perPage;
-      }); 
-
     // content header
     this.contentHeader = {
       headerTitle: 'Invoices',

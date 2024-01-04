@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { Member } from 'app/main/models/member.model';
 import { InvoicePreviewService } from '../invoice-preview/invoice-preview.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -16,6 +16,7 @@ export class InvoiceAddComponent implements OnInit {
   form: FormGroup;
 
   public member: Member;
+  isLoading = false;
 
   public paymentDetails = {
     bankName: 'Stopanska Banka AD - Skopje',
@@ -35,40 +36,79 @@ export class InvoiceAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      amount: this.fb.control(''),
-      paid: this.fb.control(''),
       memberId: this.fb.control(''),
-      paymentStatus: this.fb.control(''),
-      paymentDate: this.fb.control('')
+      services: this.fb.array([])
     });
 
     this._invoicePreviewService.getMember(this.route.snapshot.params.member_id)
       .then(res => {
         this.member = res.member;
-      })
+
+        this.addServiceRow();
+      });
   }
 
-  onSubmit() {
-    this.form.get('paymentStatus').setValue(this.form.value.amount === this.form.value.paid ? 'paid' : 'unpaid');
-    this.form.get('paymentDate').setValue(new Date());
-    this.form.get('memberId').setValue(this.member.id);
+  createServiceFormGroup(): FormGroup {
+    return this.fb.group({
+      service_name: ['', Validators.required],
+      amount: ['', Validators.required],
+      has_paid: ['', Validators.required],
+    });
+  }
 
-    if (this.form.value.amount < this.form.value.paid) {
-      this._snackBar.open('Please enter lower paid value', 'Close', {
+  get services(): FormArray {
+    return this.form.get('services') as FormArray;
+  }
+
+  addServiceRow(): void {
+    this.services.push(this.createServiceFormGroup());
+  }
+
+  async onSubmit() {
+    const services = this.form.value.services;
+
+    if (this.form.invalid) {
+      this._snackBar.open('Please add services to this invoice!', 'Close', {
         duration: 2500,
         panelClass: ['yoshitaka-danger-snackbar']
       });
+
       return;
     }
 
-    this._invoicePreviewService.createInvoice(this.form.value)
-      .then(() => {
-        this.router.navigate(['/members/invoice', this.member.id])
-      }).catch((err) => {
-        this._snackBar.open(err.error.message, 'Close', {
-          duration: 2500,
-          panelClass: ['yoshitaka-danger-snackbar']
-        });
-      })
+    const hasInvalidService = services.some(service => service.has_paid > service.amount);
+
+    if (hasInvalidService) {
+      this._snackBar.open('Error: Has Paid value cannot be higher than the service amount.', 'Close', {
+        duration: 2500,
+        panelClass: ['yoshitaka-danger-snackbar']
+      });
+      return; // Stop the submission
+    }
+
+    this.isLoading = true;
+
+    try {
+      const invoiceBody = {
+        memberId: Number(this.route.snapshot.params.member_id)
+      }
+
+      const invoice = await this._invoicePreviewService.createInvoice(invoiceBody);
+      await this._invoicePreviewService.createUpdateInvoiceServices(services, invoice.id);
+
+      this._snackBar.open('Invoice has been created!', 'Close', {
+        duration: 2500,
+        panelClass: ['yoshitaka-success-snackbar']
+      });
+
+      this.router.navigate(['/members/invoice', this.route.snapshot.params.member_id])
+    } catch (error) {
+      this._snackBar.open(error.error.message, 'Close', {
+        duration: 2500,
+        panelClass: ['yoshitaka-danger-snackbar']
+      });
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

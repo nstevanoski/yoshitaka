@@ -1,4 +1,4 @@
-<div class="content-wrapper container-xxl p-0" *ngIf="apiData && member">
+<div class="content-wrapper container-xxl p-0" *ngIf="apiData && member && paymentStatus">
     <div class="content-body">
       <section class="invoice-preview-wrapper">
         <div class="row invoice-preview">
@@ -117,7 +117,7 @@
                         <p class="invoice-total-title">Debt:</p>
                         <p class="invoice-total-amount">{{ getTotalAmount(apiData)- getTotalPaid(apiData) }} den</p>
                       </div>
-                      <hr class="my-50" />
+                      <hr class="my-50" *ngIf="getTotalAmount(apiData) !== getTotalPaid(apiData)"/>
                       <div class="invoice-total-item">
                         <p class="invoice-total-title">Total Paid:</p>
                         <p class="invoice-total-amount">{{ getTotalPaid(apiData) }} den</p>
@@ -143,7 +143,7 @@
             <div class="card">
               <div class="card-body">
                 <button
-                  *ngIf="paymentStatus === 'UNPAID' || (!pdfFile && !pdfFile.size)"
+                  *ngIf="paymentStatus === 'UNPAID'"
                   class="btn btn-primary btn-block mb-75"
                   data-toggle="modal"
                   data-target="#send-invoice-sidebar"
