@@ -71,6 +71,12 @@ export class InvoicePreviewService implements Resolve<any> {
     return this.http.put(url, form).toPromise();
   }
 
+  createUpdateInvoiceServices(services: any, invoiceId: number): Promise<any> {
+    const url = `${environment.apiUrl}/api/members/invoices/${invoiceId}/services`;
+
+    return this.http.put(url, services).toPromise();
+  }
+
   sendEmail(form: any): Promise<any> {
     const url = `${environment.apiUrl}/api/members/send-email`;
 

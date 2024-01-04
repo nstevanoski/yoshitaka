@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { Member } from 'app/main/models/member.model';
 import { InvoicePreviewService } from '../invoice-preview/invoice-preview.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -36,11 +36,8 @@ export class InvoiceEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      amount: this.fb.control(''),
-      paid: this.fb.control(''),
       memberId: this.fb.control(''),
-      paymentStatus: this.fb.control(''),
-      paymentDate: this.fb.control('')
+      services: this.fb.array([])
     });
 
     this._invoicePreviewService.getApiData(this.route.snapshot.params.invoice_id)
@@ -51,27 +48,39 @@ export class InvoiceEditComponent implements OnInit {
         this.form.patchValue({
           amount: this.invoice.amount,
           paid: this.invoice.paid
-        })
-      })
+        });
+
+        this.addServiceRow(this.invoice);
+      });
+  }
+
+  createServiceFormGroup(service?: any): FormGroup {
+    return this.fb.group({
+      id: [service ? service.id : ''],
+      service_name: [service ? service.service_name : '', Validators.required],
+      amount: [service ? service.amount : '', Validators.required],
+      has_paid: [service ? service.has_paid : ''],
+      left_to_be_paid: [service ? service.left_to_be_paid : '']
+    });
+  }
+
+  get services(): FormArray {
+    return this.form.get('services') as FormArray;
+  }
+
+  addServiceRow(invoice): void {
+    if (invoice) {
+      this.invoice.services.forEach(service => {
+        this.services.push(this.createServiceFormGroup(service));
+      });
+    } else {
+      this.services.push(this.createServiceFormGroup());
+    }
   }
 
   onSubmit() {
-    this.form.get('paymentStatus').setValue(this.form.value.amount === this.form.value.paid ? 'paid' : 'unpaid');
-    this.form.get('paymentDate').setValue(new Date());
-    this.form.get('memberId').setValue(this.member.id);
-
-    if (this.form.value.amount < this.form.value.paid) {
-      this._snackBar.open('Please enter lower paid value', 'Close', {
-        duration: 2500,
-        panelClass: ['yoshitaka-danger-snackbar']
-      });
-      return;
-    }
-
-    this._invoicePreviewService.updateInvoice(this.form.value, this.invoice.id)
+    this._invoicePreviewService.createUpdateInvoiceServices(this.form.value.services, this.invoice.id)
       .then(() => {
-        this.router.navigate(['/members/invoice/preview', this.invoice.id]);
-
         this._snackBar.open('Invoice has been updated!', 'Close', {
           duration: 2500,
           panelClass: ['yoshitaka-success-snackbar']

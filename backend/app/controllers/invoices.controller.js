@@ -173,22 +173,34 @@ exports.delete = async (req, res) => {
 exports.createService = async (req, res) => {
     try {
         const memberInvoiceId = req.params.invoice_id;
-        const { service_name, has_paid, amount } = req.body;
+        const services = req.body;
 
-        if (!memberInvoiceId || !service_name || !has_paid || !amount) {
-            return res.status(400).send({ message: 'Something went wrong, all fields are required!' });
+        if (!memberInvoiceId || !services || !Array.isArray(services) || services.length === 0) {
+            return res.status(400).send({ message: 'Something went wrong, provide a valid array of services!' });
         }
 
-        const serviceObject = {
-            memberInvoiceId,
-            service_name,
-            has_paid,
-            amount,
-            left_to_be_paid: amount - has_paid
-        };
+        const createdServices = [];
 
-        const createdService = await Service.create(serviceObject);
-        return res.json(createdService);
+        for (const service of services) {
+            const { service_name, has_paid, amount } = service;
+
+            if (!service_name || !has_paid || !amount) {
+                return res.status(400).send({ message: 'All fields are required for each service!' });
+            }
+
+            const serviceObject = {
+                memberInvoiceId,
+                service_name,
+                has_paid,
+                amount,
+                left_to_be_paid: amount - has_paid
+            };
+
+            const createdService = await Service.create(serviceObject);
+            createdServices.push(createdService);
+        }
+
+        return res.json(createdServices);
     } catch (error) {
         console.error('Error on invoice: ', error);
         return res.status(400).send({ message: error.message });
@@ -197,25 +209,50 @@ exports.createService = async (req, res) => {
 
 exports.updateService = async (req, res) => {
     try {
-        const id = req.params.invoice_id;
-        const { body } = req;
+        const serviceUpdates = req.body;
+        const memberInvoiceId = req.params.invoice_id;
 
-        const [numUpdatedRows] = await Service.update(body, {
-            where: { id: id }
-        });
-
-        if (numUpdatedRows === 1) {
-            res.send({
-                message: "Service was updated successfully."
-            });
-        } else {
-            res.send({
-                message: `Cannot update Service with id=${id}. Maybe Service was not found or req.body is empty!`
-            });
+        if (!Array.isArray(serviceUpdates) || serviceUpdates.length === 0) {
+            return res.status(400).send({ message: 'Provide a valid array of service updates!' });
         }
-    } catch (err) {
-        res.status(500).send({
-            message: "Error updating Service with id=" + id
+
+        const updatedServices = [];
+        const createdServices = [];
+
+        for (const update of serviceUpdates) {
+            const { id } = update;
+
+            try {
+                if (id) {
+                    // Update existing service
+                    const [numUpdatedRows] = await Service.update(update, {
+                        where: { id: id }
+                    });
+
+                    if (numUpdatedRows === 1) {
+                        updatedServices.push(id);
+                    }
+                } else {
+                    update.memberInvoiceId = memberInvoiceId;
+                    update.left_to_be_paid = update.amount - update.has_paid;
+
+                    const createdService = await Service.create(update);
+                    createdServices.push(createdService.id);
+                }
+            } catch (updateError) {
+                console.error('Error updating/creating a service: ', updateError);
+                throw new Error('Error updating/creating services. See logs for details.');
+            }
+        }
+
+        return res.json({
+            message: "Services were updated and created successfully.",
+            updatedServices,
+            createdServices
         });
+    } catch (error) {
+        console.error('Error updating/creating services: ', error);
+        return res.status(500).send({ message: error.message || "Error updating/creating services." });
     }
 };
+

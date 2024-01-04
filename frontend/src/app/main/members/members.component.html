@@ -25,7 +25,7 @@
                     {{member.email}}
                 </div>
                 <div class="badge badge-danger font-weight-bold mt-2" *ngIf="member.total_left_to_be_paid !== 0">
-                    Left to be paid: {{member.total_left_to_be_paid}}
+                    Amount due: {{member.total_left_to_be_paid}} den
                 </div>
                 <div class="badge badge-success font-weight-bold mt-2" *ngIf="member.total_left_to_be_paid === 0">
                     All payments completed
