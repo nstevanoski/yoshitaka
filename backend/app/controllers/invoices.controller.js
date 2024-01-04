@@ -258,3 +258,26 @@ exports.updateService = async (req, res) => {
     }
 };
 
+exports.deleteService = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const numDeleted = await Service.destroy({
+            where: { id: id }
+        });
+
+        if (numDeleted === 1) {
+            res.send({
+                message: "Service was deleted successfully!"
+            });
+        } else {
+            res.send({
+                message: `Cannot delete Service with id=${id}. Maybe Service was not found!`
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: "Could not delete Service with id=" + id
+        });
+    }
+};

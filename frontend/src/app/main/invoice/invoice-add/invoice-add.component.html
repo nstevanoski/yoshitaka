@@ -67,6 +67,7 @@
                       <th class="py-1">Service Name</th>
                       <th class="py-1 text-right">Amount</th>
                       <th class="py-1 text-right">Has Paid</th>
+                      <th class="py-1 text-right">Delete</th>
                     </tr>
                   </thead>
                   <tbody formArrayName="services">
@@ -84,6 +85,11 @@
                       <td class="py-1 text-right">
                         <span class="font-weight-bold d-flex align-items-center">
                           <input type="text" class="form-control mr-1" formControlName="has_paid" placeholder="Has paid">
+                        </span>
+                      </td>
+                      <td>
+                        <span class="material-icons text-danger cursor-pointer" (click)="deleteService(i)">
+                          delete
                         </span>
                       </td>
                     </tr>

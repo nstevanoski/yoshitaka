@@ -18,6 +18,7 @@ module.exports = app => {
     // Service routes
     router.post("/:invoice_id/services", controller.createService); 
     router.put("/:invoice_id/services", controller.updateService); 
+    router.delete("/:id/services", controller.deleteService); 
   
     app.use("/api/members/invoices", [authJwt.verifyToken], router);
   };

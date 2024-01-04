@@ -6,6 +6,8 @@ import { Member } from 'app/main/models/member.model';
 import { InvoicePreviewService } from '../invoice-preview/invoice-preview.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationDialogComponent } from 'app/ui/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-invoice-edit',
@@ -31,7 +33,8 @@ export class InvoiceEditComponent implements OnInit {
     private _coreSidebarService: CoreSidebarService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +70,8 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   subscribeToAmountAndHasPaidChanges(serviceFormGroup: FormGroup): void {
+    if (this.services.length === 0) return; 
+ 
     serviceFormGroup.get('amount').valueChanges.subscribe((amount) => {
       this.updateLeftToBePaid(serviceFormGroup);
     });
@@ -134,5 +139,40 @@ export class InvoiceEditComponent implements OnInit {
           panelClass: ['yoshitaka-danger-snackbar']
         });
       })
+  }
+
+  deleteService(service: any, index: number) {
+    if (this.services.length <= 1) return;
+
+    if (service.controls.id.value) {
+      const modal = this.modalService.open(ConfirmationDialogComponent, {
+        centered: true
+      });
+  
+      modal.componentInstance.info = {
+        title: 'Delete Invoice',
+        message: 'Are you sure you want to delete this service?'
+      }
+  
+      modal.result.then((res) => {
+        if (res) {
+          this._invoicePreviewService.deleteService(service.controls.id.value)
+            .then(() => {
+              this.services.removeAt(index);
+              this._snackBar.open('Service has been deleted successfully!', 'Close', {
+                duration: 2500,
+                panelClass: ['yoshitaka-success-snackbar']
+              });
+            }).catch((err) => {
+              this._snackBar.open(err.error.message, 'Close', {
+                duration: 2500,
+                panelClass: ['yoshitaka-danger-snackbar']
+              });
+            })
+        }
+      });
+    } else {
+      this.services.removeAt(index);
+    }
   }
 }

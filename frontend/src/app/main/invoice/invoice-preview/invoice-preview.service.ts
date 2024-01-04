@@ -82,4 +82,10 @@ export class InvoicePreviewService implements Resolve<any> {
 
     return this.http.post(url, form).toPromise();
   }
+
+  deleteService(id: any): Promise<any> {
+    const url = `${environment.apiUrl}/api/members/invoices/${id}/services`;
+
+    return this.http.delete(url).toPromise();
+  }
 }

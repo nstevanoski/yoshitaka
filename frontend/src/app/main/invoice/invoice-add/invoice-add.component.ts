@@ -111,4 +111,10 @@ export class InvoiceAddComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+  deleteService(index: number) {
+    if (this.services.length > 1) {
+      this.services.removeAt(index);
+    }
+  }
 }
