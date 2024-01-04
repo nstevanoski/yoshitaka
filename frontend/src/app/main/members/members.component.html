@@ -2,10 +2,14 @@
     <app-members-form></app-members-form>
 
     <div class="d-flex justify-content-end mt-2">
-        <div class="btn btn-warning mr-2" (click)="exportToExcel()">
+        <button type="button" class="btn btn-info mr-2" (click)="sendInfoEmail()" [disabled]="isSendInfoEmailLoading">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isSendInfoEmailLoading"></span>
+            Send info email
+        </button>
+        <button type="button" class="btn btn-warning mr-2" (click)="exportToExcel()" [disabled]="isExportLoading">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isExportLoading"></span>
             Export unpaid members
-        </div>
+        </button>
         <div>
             <span class="btn material-icons mr-1" (click)="changeListType('grid')" [ngClass]="{'btn-primary': listType === 'grid', 'btn-secondary': listType === 'list'}">
                 grid_view

@@ -50,6 +50,7 @@ export class MembersComponent implements OnInit {
   public listType: string = 'grid';
 
   public isExportLoading = false;
+  public isSendInfoEmailLoading = false;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -295,6 +296,36 @@ export class MembersComponent implements OnInit {
       }).finally(() => {
         this.isExportLoading = false;
       })
+  }
+
+  async sendInfoEmail() {
+    this.isSendInfoEmailLoading = true;
+
+    try {
+      const unpaidMembers = await this._datatablesService.getUnpaidMembers();
+
+      unpaidMembers.forEach(async (member: any) => {
+        const form = {
+          email: member.email,
+          subject: 'Payment Reminder',
+          message: `Dear ${member.name},\n\nWe hope this message finds you well. We wanted to bring to your attention that there is an outstanding balance.\n\nAmount Due: $${member.unpaid}\n\nPlease ensure to settle this payment at your earliest convenience. You can make the payment through our website or contact our support team if you have any questions.\n\nThank you for your prompt attention to this matter.\n\nBest Regards,\nNikola Stevanoski INKI595`
+        }
+
+        await this._datatablesService.sendEmail(form);
+      });
+
+      this._snackBar.open('Email sent to all unpaid members!', 'Close', {
+        duration: 2500,
+        panelClass: ['yoshitaka-success-snackbar']
+      });
+    } catch (error) {
+      this._snackBar.open(error.error.message, 'Close', {
+        duration: 2500,
+        panelClass: ['yoshitaka-danger-snackbar']
+      });
+    } finally {
+      this.isSendInfoEmailLoading = false;
+    }
   }
 
   exportDataToExcel(data: any[], fileName: string): void {

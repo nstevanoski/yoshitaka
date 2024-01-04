@@ -230,4 +230,10 @@ export class MembersService implements Resolve<any> {
   getUnpaidMembers(): Promise<Member[]> {
     return this.http.get<any>(`${environment.apiUrl}/api/members/unpaid`).toPromise();
   }
+
+  sendEmail(form: any): Promise<any> {
+    const url = `${environment.apiUrl}/api/members/send-email`;
+
+    return this.http.post(url, form).toPromise();
+  }
 }
