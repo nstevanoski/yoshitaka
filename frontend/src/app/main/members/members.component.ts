@@ -46,6 +46,8 @@ export class MembersComponent implements OnInit {
   public chkBoxSelected = [];
   public SelectionType = SelectionType;
 
+  public listType: string = 'grid';
+
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
@@ -77,6 +79,12 @@ export class MembersComponent implements OnInit {
     this.editingAge[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.rows = [...this.rows];
+  }
+
+  changeListType(listType: 'grid' | 'list') {
+    this.listType = listType;
+
+    localStorage.setItem('listType', listType);
   }
 
   /**
@@ -213,6 +221,10 @@ export class MembersComponent implements OnInit {
         ]
       }
     };
+
+    if (localStorage.getItem('listType')) {
+      this.listType = localStorage.getItem('listType').toString()
+    }
   }
 
   sort(event) {

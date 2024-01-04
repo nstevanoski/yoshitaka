@@ -28,7 +28,7 @@ exports.create = async (req, res) => {
       return res.status(400).send({ message: 'All fields are required!' });
     }
 
-    const memberExists = await Member.findOne({ where: { first_name, last_name } });
+    const memberExists = await Member.findOne({ where: { email } });
     if (memberExists) {
       return res.status(400).send({ message: 'Member already exists.' });
     }
@@ -67,7 +67,7 @@ exports.getAll = async (req, res) => {
 
     const members = await Member.findAndCountAll({
       where: condition,
-      order: [['id', order_by || 'asc']],
+      order: [['id', order_by || 'desc']],
       limit,
       offset,
       include: [{ association: "invoices", include: [{ association: "services" }] }],

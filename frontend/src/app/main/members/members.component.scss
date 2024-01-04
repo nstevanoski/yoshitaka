@@ -42,10 +42,22 @@
             cursor: pointer;
         }
     }
+
+    .members-list-holder {
+        &__member {
+            background-color: #192A35;
+            padding: 2em;
+            border-radius: 1em;
+        }
+    }
 }
 
 .icon {
     cursor: pointer;
+}
+
+.material-icons {
+    font-size: 16px;
 }
 
 @media only screen and (max-width: 1300px) {

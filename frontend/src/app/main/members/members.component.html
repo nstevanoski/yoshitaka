@@ -5,8 +5,51 @@
         No members found!
     </div>
 
+    <div class="d-flex justify-content-end mt-2">
+        <div>
+            <span class="btn material-icons mr-1" (click)="changeListType('grid')" [ngClass]="{'btn-primary': listType === 'grid', 'btn-secondary': listType === 'list'}">
+                grid_view
+            </span>
+            <span class="btn material-icons" (click)="changeListType('list')" [ngClass]="{'btn-primary': listType === 'list', 'btn-secondary': listType === 'grid'}">
+                list
+            </span>
+        </div>
+    </div>
+
     <div class="content-body mt-2">
-        <div class="members-holder">
+        <div class="members-list-holder" *ngIf="listType === 'list'">
+            <div class="members-list-holder__member d-flex justify-content-between mt-2" *ngFor="let member of members">
+                <div>
+                    <div>
+                        <h2>
+                            {{member.first_name}} {{member.last_name}}
+                        </h2>
+                        <p>{{member.email}}</p>
+                    </div>
+                    <div>
+                        <div class="badge badge-danger font-weight-bold" *ngIf="member.total_left_to_be_paid !== 0">
+                            Amount due: {{member.total_left_to_be_paid}} den
+                        </div>
+                        <div class="badge badge-success font-weight-bold" *ngIf="member.total_left_to_be_paid === 0">
+                            All payments completed
+                        </div>
+                        <div class="members-holder__view-details" [routerLink]="['/members/invoice/', member.id]">
+                            View invoices
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="icon" (click)="openEditModal(member)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </div>
+                    <div class="icon" (click)="deleteMember(member)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="members-holder" *ngIf="listType === 'grid'">
             <div class="members-holder__member" *ngFor="let member of members">
                 <div class="d-flex align-items-center justify-content-between">
                     <h2>
