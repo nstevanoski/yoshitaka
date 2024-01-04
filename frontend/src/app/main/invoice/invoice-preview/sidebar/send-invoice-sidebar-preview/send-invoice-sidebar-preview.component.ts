@@ -63,7 +63,6 @@ export class SendInvoiceSidebarPreviewComponent implements OnInit {
       `
     });
   }
-
   /**
    * Toggle the sidebar
    *
@@ -74,9 +73,16 @@ export class SendInvoiceSidebarPreviewComponent implements OnInit {
   }
 
   onSubmit() {
+    let formData = new FormData();
+
+    formData.append('email', this.form.value.email);
+    formData.append('subject', this.form.value.subject);
+    formData.append('message', this.form.value.message);
+    // formData.append('message', this.form.value.message);
+
     this.isLoading = true;
 
-    this._invoicePreviewService.sendEmail(this.form.value)
+    this._invoicePreviewService.sendEmail(formData)
       .then((res) => {
         this._snackBar.open(res.message, 'Close', {
           duration: 2500,

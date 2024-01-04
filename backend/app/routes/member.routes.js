@@ -1,4 +1,8 @@
 const { authJwt } = require("../middlewares");
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 module.exports = app => {
     const controller = require("../controllers/member.controller");
@@ -21,7 +25,7 @@ module.exports = app => {
     router.put("/:id", controller.update);
 
     // Send email to member
-    router.post("/send-email", controller.sendEmail);
+    router.post("/send-email", upload.single('file'), controller.sendEmail);
   
     // Delete a Member with id
     router.delete("/:id", controller.delete); 

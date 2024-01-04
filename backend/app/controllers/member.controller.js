@@ -147,8 +147,14 @@ exports.sendEmail = async (req, res) => {
   try {
     const { email, subject, message } = req.body;
 
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ message: 'No file attached' });
+    }
+
     const transporter = nodemailer.createTransport({
-      service: 'gmail', 
+      service: 'gmail',
       auth: {
         user: 'stevanoski.nikola@uklo.edu.mk',
         pass: 'usxmngijmzjuudfh',
@@ -160,14 +166,21 @@ exports.sendEmail = async (req, res) => {
       to: email,
       subject: subject,
       html: message,
+      attachments: [
+        {
+          filename: file.originalname,
+          content: file.buffer, // Assuming 'file.buffer' contains the file content
+        },
+      ],
     };
+
+    console.log(file);
 
     const info = await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ message: `Email sent successfully` });
+    res.status(200).json({ message: 'Email sent successfully' });
   } catch (err) {
     console.error('Error sending email:', err);
-
     res.status(500).json({ error: 'Failed to send email' });
   }
 };
