@@ -15,6 +15,7 @@ export class SendInvoiceSidebarPreviewComponent implements OnInit {
   @Input() member: Member;
   @Input() totalAmount?: number;
   @Input() services;
+  @Input() file;
   isLoading: boolean = false;
 
   constructor(private _coreSidebarService: CoreSidebarService, private fb: FormBuilder, private _invoicePreviewService: InvoicePreviewService, private _snackBar: MatSnackBar) {}
@@ -78,7 +79,7 @@ export class SendInvoiceSidebarPreviewComponent implements OnInit {
     formData.append('email', this.form.value.email);
     formData.append('subject', this.form.value.subject);
     formData.append('message', this.form.value.message);
-    // formData.append('message', this.form.value.message);
+    formData.append('file', this.file);
 
     this.isLoading = true;
 

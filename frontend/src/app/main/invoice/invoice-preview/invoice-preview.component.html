@@ -78,7 +78,7 @@
                   </div>
                 </div>
               </div>
-              <div class="table-responsive border-bottom" *ngIf="services">
+              <div class="table-responsive border-bottom" *ngIf="services.length !== 0">
                 <table class="table">
                   <thead>
                     <tr>
@@ -107,7 +107,7 @@
                 </table>
               </div>
   
-              <div class="card-body invoice-padding pb-0">
+              <div class="card-body invoice-padding pb-0" *ngIf="services.length !== 0">
                 <div class="row invoice-sales-total-wrapper">
                   <div class="col-md-6 order-md-1 order-2 mt-md-0 mt-3">
                   </div>
@@ -127,6 +127,11 @@
                 </div>
               </div>
               <!-- Invoice Description Ends -->
+
+              <div class="text-center text-uppercase font-weight-bold text-danger gap-5" *ngIf="services.length === 0">
+                Edit this invoice to add services!
+              </div>
+            
   
               <div class="invoice-spacing"></div>
             </div>
@@ -138,7 +143,7 @@
             <div class="card">
               <div class="card-body">
                 <button
-                  *ngIf="paymentStatus === 'UNPAID'"
+                  *ngIf="paymentStatus === 'UNPAID' || (!pdfFile && !pdfFile.size)"
                   class="btn btn-primary btn-block mb-75"
                   data-toggle="modal"
                   data-target="#send-invoice-sidebar"
@@ -147,7 +152,7 @@
                 >
                   Send Email
                 </button>
-                <a class="btn btn-outline-secondary btn-block mb-75 text-white" href="javascript:window.print();" rippleEffect>
+                <a *ngIf="services.length !== 0" class="btn btn-outline-secondary btn-block mb-75 text-white" href="javascript:window.print();" rippleEffect>
                   Print
                 </a>
                 <a
@@ -171,7 +176,7 @@
       overlayClass="modal-backdrop"
       hideOnEsc="true"
     >
-      <app-send-invoice-sidebar-preview [services]="services" [totalAmount]="getTotalAmount(apiData) - getTotalPaid(apiData)" [member]="member"></app-send-invoice-sidebar-preview>
+      <app-send-invoice-sidebar-preview [file]="pdfFile" [services]="services" [totalAmount]="getTotalAmount(apiData) - getTotalPaid(apiData)" [member]="member"></app-send-invoice-sidebar-preview>
     </core-sidebar>
   </div>
   
