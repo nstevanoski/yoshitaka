@@ -27,11 +27,11 @@
                         Total Expense
                     </div>
                     <span>
-                        {{totalIncome}} den
+                        {{totalExpenses}} den
                     </span>
                 </div>
             </div>
-            <div class="dashboard__items__item d-flex align-items-center">
+            <div class="dashboard__items__item d-flex align-items-center" *ngIf="totalIncome > totalExpenses ">
                 <div class="mr-2">
                     <span class="material-icons">
                         star
@@ -42,7 +42,7 @@
                         Total Savings
                     </div>
                     <span>
-                        {{totalIncome}} den
+                        {{totalIncome - totalExpenses}} den
                     </span>
                 </div>
             </div>

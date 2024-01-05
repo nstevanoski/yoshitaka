@@ -19,6 +19,8 @@ module.exports = app => {
     router.get("/unpaid", controller.unpaidInvoicesReport);
 
     router.get("/paid", controller.totalHasPaidReport);
+
+    router.get("/expenses", controller.totalExpensesReport);
   
     // Retrieve a single Member with id
     router.get("/:id", controller.findOne); 

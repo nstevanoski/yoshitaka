@@ -8,14 +8,24 @@ import { DashboardService } from 'app/main/dashboard/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
   totalIncome: number;
+  totalExpenses: number;
 
   constructor(private _dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-    this._dashboardService.getTotalIncome()
-      .then((res) => {
-        this.totalIncome = res.total;
-      })
+    this.getData();
+  }
+
+  async getData() {
+    try {
+      const totalIncome = await this._dashboardService.getTotalIncome();
+      this.totalIncome = totalIncome.total;
+
+      const totalExpenses = await this._dashboardService.getTotalExpenses();
+      this.totalExpenses = totalExpenses.total;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 }

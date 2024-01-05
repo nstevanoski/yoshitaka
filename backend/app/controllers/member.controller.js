@@ -1,5 +1,6 @@
 const db = require("../models");
 const Member = db.member;
+const Expense = db.expense;
 const Invoice = db.memberInvoice;
 const Service = db.invoiceService;
 const Op = db.Op;
@@ -296,6 +297,22 @@ exports.totalHasPaidReport = async (req, res) => {
     }, 0);
 
     res.send({ total: totalHasPaid });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+exports.totalExpensesReport = async (req, res) => {
+  try {
+    const allExpenses = await Expense.findAll({
+      // Additional conditions for expenses, if needed
+    });
+
+    const totalExpenses = allExpenses.reduce((sum, expense) => {
+      return sum + Number(expense.amount);
+    }, 0);
+
+    res.send({ total: totalExpenses });
   } catch (err) {
     res.status(500).send(err.message);
   }

@@ -11,4 +11,8 @@ export class DashboardService {
   getTotalIncome(): Promise<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/members/paid`).toPromise();
   }
+
+  getTotalExpenses(): Promise<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/members/expenses`).toPromise();
+  }
 }
