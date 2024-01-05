@@ -17,6 +17,8 @@ module.exports = app => {
 
     // Retrieve all Members with unpaid invoices
     router.get("/unpaid", controller.unpaidInvoicesReport);
+
+    router.get("/paid", controller.totalHasPaidReport);
   
     // Retrieve a single Member with id
     router.get("/:id", controller.findOne); 

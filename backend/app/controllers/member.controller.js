@@ -267,3 +267,36 @@ exports.unpaidInvoicesReport = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+exports.totalHasPaidReport = async (req, res) => {
+  try {
+    const unpaidInvoices = await Member.findAll({
+      include: [
+        {
+          model: Invoice,
+          as: 'invoices',
+          include: [{ model: Service, as: 'services' }]
+        }
+      ],
+      where: {
+        // Additional condition for members, if needed
+      }
+    });
+
+    const totalHasPaid = unpaidInvoices.reduce((sum, member) => {
+      const totalHasPaidForMember = member.invoices.reduce((sumInvoice, invoice) => {
+        const hasPaidServices = invoice.services.filter(service => service.has_paid);
+        const totalHasPaidForInvoice = hasPaidServices.reduce((serviceSum, service) => {
+          return serviceSum + (service.has_paid || 0);
+        }, 0);
+        return sumInvoice + totalHasPaidForInvoice;
+      }, 0);
+
+      return sum + totalHasPaidForMember;
+    }, 0);
+
+    res.send({ total: totalHasPaid });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
