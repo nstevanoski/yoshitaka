@@ -308,7 +308,7 @@ export class MembersComponent implements OnInit {
         const form = {
           email: member.email,
           subject: 'Payment Reminder',
-          message: `Dear ${member.name},\n\nWe hope this message finds you well. We wanted to bring to your attention that there is an outstanding balance.\n\nAmount Due: $${member.unpaid}\n\nPlease ensure to settle this payment at your earliest convenience. You can make the payment through our website or contact our support team if you have any questions.\n\nThank you for your prompt attention to this matter.\n\nBest Regards,\nNikola Stevanoski INKI595`
+          message: `Dear ${member.name},\n\nWe hope this message finds you well. We wanted to bring to your attention that there is an outstanding balance.\n\nAmount Due: ${member.unpaid}\n\nPlease ensure to settle this payment at your earliest convenience. You can make the payment through our website or contact our support team if you have any questions.\n\nThank you for your prompt attention to this matter.\n\nBest Regards,\nNikola Stevanoski INKI595`
         }
 
         await this._datatablesService.sendEmail(form);
