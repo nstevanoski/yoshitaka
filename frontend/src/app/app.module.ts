@@ -42,6 +42,11 @@ const appRoutes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'expenses',
+    loadChildren: () => import('./main/expense/expense.module').then(m => m.ExpenseModule),
+    canActivate: [AuthGuardService]
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full'

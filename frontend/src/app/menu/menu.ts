@@ -24,6 +24,14 @@ export const menu: CoreMenu[] = [
         icon: 'users',
         url: 'members'
       },
+      {
+        id: 'expenses',
+        title: 'Expenses',
+        translate: 'MENU.OFFICE.EXPENSES',
+        type: 'item',
+        icon: 'dollar-sign',
+        url: 'expenses'
+      },
       // {
       //   id: 'settings',
       //   title: 'Settings',

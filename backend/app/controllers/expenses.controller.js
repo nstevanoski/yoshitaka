@@ -96,7 +96,7 @@ exports.getAll = async (req, res) => {
 
         const result = await Expense.findAndCountAll({
             where: condition,
-            order: [['id', order_by ? order_by : 'asc']],
+            order: [['id', order_by ? order_by : 'desc']],
             limit,
             offset
         });

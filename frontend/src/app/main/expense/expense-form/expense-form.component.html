@@ -1,0 +1,11 @@
+<form [formGroup]="form">
+    <div class="row controls">
+        <div class="col-12 col-md-6">
+            <h1>Expenses</h1>
+        </div>
+        <div class="col-12 col-md-6 d-flex align-items-center right-holder">
+            <input type="search" placeholder="Search expense by name" class="form-control p-2" formControlName="search" />
+            <button class="btn btn-primary w-100" (click)="addExpenseModal()">+ Add expense</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,79 @@
+@import '@core/scss/base/colors';
+
+.content-body {
+    .expenses-holder {
+        display: grid;
+        grid-template-columns: 4fr 4fr 4fr;
+        gap: 2em;
+
+        .badge {
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        &__expense {
+            background-color: #192A35;
+            padding: 2em;
+            border-radius: 1em;
+
+            h2 {
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 140%;
+            }
+        }
+
+        &__description {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        &__view-details {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 100%;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            margin-top: 1em;
+            color: $primary;
+            cursor: pointer;
+        }
+    }
+
+    .expenses-list-holder {
+        &__expense {
+            background-color: #192A35;
+            padding: 2em;
+            border-radius: 1em;
+        }
+    }
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.material-icons {
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 1300px) {
+    .expenses-holder {
+        grid-template-columns: 33% 33% 33% !important;
+    }
+}
+
+@media only screen and (max-width: 976px) {
+    .expenses-holder {
+        grid-template-columns: 45% 45% !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .expenses-holder {
+        grid-template-columns: 100% !important;
+    }
+}
