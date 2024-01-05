@@ -28,6 +28,8 @@ db.sequelize = sequelize;
 db.user = require("./user.model.js")(sequelize, Sequelize, DataTypes);
 db.role = require("./role.model.js")(sequelize, Sequelize, DataTypes);
 
+db.expense = require("./expenses/expense.model.js")(sequelize, Sequelize, DataTypes);
+
 db.member = require("./member/member.model.js")(sequelize, Sequelize, DataTypes);
 db.memberInvoice = require("./member/invoices/member_invoice.model.js")(sequelize, Sequelize, DataTypes);
 db.invoiceService = require("./member/invoices/iServices/invoice_service.model.js")(sequelize, Sequelize, DataTypes);

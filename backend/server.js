@@ -18,6 +18,7 @@ db.sequelize.sync();
 // API ROUTES
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/expense.routes")(app);
 require("./app/routes/member.routes")(app);
 require("./app/routes/member_invoice.routes")(app);
 
