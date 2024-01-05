@@ -90,7 +90,7 @@ export class AuthLoginV1Component implements OnInit {
         (res: any) => {
           this.loading = false;
           if (res.accessToken) {
-            this._router.navigateByUrl('members');
+            this._router.navigateByUrl('dashboard');
             this._snackBar.open('Logged in!', 'Close', {
               duration: 2500,
               panelClass: ['yoshitaka-success-snackbar']

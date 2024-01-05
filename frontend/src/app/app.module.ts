@@ -28,6 +28,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const appRoutes: Routes = [
   {
+    path: 'dashboard',
+    loadChildren: () => import('./main/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./main/pages/pages.module').then(m => m.PagesModule)
   },
@@ -38,7 +43,7 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/members',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

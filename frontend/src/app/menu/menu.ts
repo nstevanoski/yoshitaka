@@ -9,6 +9,14 @@ export const menu: CoreMenu[] = [
     icon: 'package',
     children: [
       {
+        id: 'dashboard',
+        title: 'Dashboard',
+        translate: 'MENU.OFFICE.DASHBOARD',
+        type: 'item',
+        icon: 'home',
+        url: 'dashboard'
+      },
+      {
         id: 'members',
         title: 'Members',
         translate: 'MENU.OFFICE.MEMBERS',

@@ -7,6 +7,7 @@ export const locale = {
       OFFICE: {
         SECTION: 'General',
         MEMBERS: 'Members',
+        DASHBOARD: 'Dashboard',
       },
       GENERAL: {
         SECTION: 'General',
